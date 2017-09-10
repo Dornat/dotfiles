@@ -1,0 +1,57 @@
+!! Font config
+URxvt.font: xft:Ubuntu Mono derivative Powerline:size=12
+
+!! utf-8
+URxvt*imLocale: uk_UA.UTF-8
+!!URxvt*locale: true
+!!URxvt*utf8: 1
+
+!! Disable ugly scrollbar
+URxvt.scrollBar: false
+
+!! Color scheme
+
+URxvt*background: #073642
+URxvt*foreground: white
+
+!!URxvt*color0:  #073642
+URxvt*color0:  #002b36
+URxvt*color1:  #dc322f
+URxvt*color2:  #859900
+URxvt*color3:  #b58900
+URxvt*color4:  #268bd2
+URxvt*color5:  #d33682
+URxvt*color6:  #2aa198
+URxvt*color7:  #eee8d5
+URxvt*color8:  #002b36
+!!URxvt*color9: white
+URxvt*color9:  #cb4b16
+URxvt*color10: #586e75
+URxvt*color11: #657b83
+URxvt*color12: #93a1a1
+!!URxvt*color12: #cb4b16
+URxvt*color13: #6c71c4
+URxvt*color14: #93a1a1
+URxvt*color15: #fdf6e3
+
+!!URxvt*color0:  #2E3436
+!!URxvt*color1:  #b22222
+!!URxvt*color2:  #4E9A06
+!!URxvt*color3:  #C4A000
+!!URxvt*color4:  #3465A4
+!!URxvt*color5:  #75507B
+!!URxvt*color6:  #ce5c00
+!!URxvt*color7:  #babdb9
+!!URxvt*color8:  #555753
+!!URxvt*color9:  #EF2929
+!!URxvt*color10: #8AE234
+!!URxvt*color11: #FCE94F
+!!URxvt*color12: #729FCF
+!!URxvt*color13: #AD7FA8
+!!URxvt*color14: #00ffea
+!!URxvt*color15: #EEEEEC
+
+!! Copy and paste function
+
+URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+URxvt.keysym.Shift-Control-V: eval:paste_clipboard
