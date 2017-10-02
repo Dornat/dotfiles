@@ -37,6 +37,10 @@ syntax on
 set ruler
 set laststatus=2
 set list
+"set Ctrl-D and Ctrl-U to srcoll 10 lines instead of half a page
+nnoremap J <C-d>
+nnoremap K <C-u>
+set scroll=5
 "hi SpecialKey ctermfg=white			hello     
 set listchars=tab:▸\ ,trail:~,extends:>,precedes:<
 "set listchars=eol:$,eol:¬,tab:>-,trail:~,extends:>,precedes:<
@@ -92,24 +96,25 @@ set t_Co=256
 "---With snippets---"
 
 "Creating an int	main(void) block by typing in insert mode ;imv"
-inoremap ;imv <Esc>:read $HOME/.vim/snippets/.intmainvoid.c<CR>2jA
+inoremap ,imv <Esc>:read $HOME/.vim/snippets/.intmainvoid.c<CR>2jA
 "Creating an int	main(int argc, char **argv)"
-inoremap ;imar <Esc>:read $HOME/.vim/snippets/.intmainargcargv.c<CR>2jA
+inoremap ,imar <Esc>:read $HOME/.vim/snippets/.intmainargcargv.c<CR>2jA
 
 "---Without snippets---"
 
-inoremap ;; <Esc>0/<++><cr>"_c4l
-nnoremap ;; <Esc>0/<++><cr>"_c4l
+inoremap ,, <Esc>0/<++><cr>"_c4l
+nnoremap ,, <Esc>0/<++><cr>"_c4l
 "printf(); with parentheses and appropriate cursor position"
-inoremap ;pf printf();<Esc>hi
-inoremap ;wr write(1, , <++>);<Esc>F,i
-inoremap ( ()<++><Esc>F)i
-"inoremap " ""<++><Esc>F"i
-"inoremap ' ''<++><Esc>F'i
-vnoremap ;( c()<Esc>hp
-vnoremap ;[ c[]<Esc>hp
-vnoremap ;< c<><Esc>hp
-vnoremap ;" c""<Esc>hp
+inoremap ,pf printf();<Esc>hi
+inoremap ,wr write(1, , <++>);<Esc>F,i
+"Adding symbols around the words
+vnoremap ,( c()<Esc>hp
+vnoremap ,[ c[]<Esc>hp
+vnoremap ,< c<><Esc>hp
+vnoremap ," c""<Esc>hp
+"Adding and deleting comments for a line
+vnoremap ,* c/*<cr>*/<Esc>hP
+vnoremap ,d* d"_dkP
 
 "ABBREVIATIONS"
 
@@ -117,4 +122,3 @@ iabbrev stdioh #include <stdio.h>
 iabbrev unistdh #include <unistd.h>
 iabbrev stdlibh #include <stdlib.h>
 iabbrev stringh #include <string.h>
-iabbrev /* /**/<Esc>hi

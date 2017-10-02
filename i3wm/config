@@ -9,7 +9,9 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-set $mod Mod1
+# Set the windows key as a mod key
+set $mod Mod4
+set $sup Mod1
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -148,10 +150,10 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym h resize shrink width 10 px or 10 ppt
-        bindsym j resize grow height 10 px or 10 ppt
-        bindsym k resize shrink height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
+        bindsym h resize shrink width 1 px or 1 ppt
+        bindsym j resize grow height 1 px or 1 ppt
+        bindsym k resize shrink height 1 px or 1 ppt
+        bindsym l resize grow width 1 px or 1 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
@@ -185,7 +187,8 @@ hide_edge_borders both
 # finds out, if available)
 bar {
 	font pango: FontAwesome, Ubuntu Mono derivative Powerline 12
-	status_command ~/.config/i3/bumblebee-status/bumblebee-status -m nic pasink weather battery date time -p date.format="%a, %b %d %Y" time.format="%I:%M %p" -t powerline
+#	status_command py3status
+	status_command ~/.config/i3/bumblebee-status/bumblebee-status -m nic pasink weather battery date time -p date.format="%a, %b %d %Y" time.format="%I:%M %p" nic.states=^down -t powerline
 #	status_command i3blocks -c ~/.config/i3/i3blocks.conf
 	tray_output none
 	colors {
@@ -235,3 +238,14 @@ exec_always xrandr --output HDMI1 --off --output LVDS1 --mode 1366x768 --pos 0x0
 
 # # Keyboard layout
 exec_always --no-startup-id "setxkbmap -model pc105 -layout us,ua -option grp:lctrl_lshift_toggle"
+
+# swap windows key with alt key
+# exec_always setxkbmap -option 'altwin:swap_alt_win'
+
+# # Dual monitor toggle
+
+bindsym $mod+Shift+m exec xrandr --output VGA1 --auto --right-of LVDS1
+
+# dual monitor workspace move
+bindsym $mod+Shift+bracketleft move workspace to output left
+bindsym $mod+Shift+bracketright move workspace to output right
