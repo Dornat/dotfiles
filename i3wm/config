@@ -234,10 +234,11 @@ exec google-chrome
 exec --no-startup-id i3-msg 'workspace $ws2; exec /usr/bin/i3-sensible-terminal'
 #exec --no-startup-id i3-msg 'workspace $ws8; exec /usr/bin/i3-sensible-terminal -e ranger; bash'
 exec /home/dornat/Downloads/trash/Telegram/Telegram
+exec shutdown -h 21:35 --no-wall
 exec_always xrandr --output HDMI1 --off --output LVDS1 --mode 1366x768 --pos 0x0 --rotate normal --output VIRTUAL1 --off --output DP1 --off --output VGA1 --off
 
 # # Keyboard layout
-exec_always --no-startup-id "setxkbmap -model pc105 -layout us,ua -option grp:lctrl_lshift_toggle"
+exec_always --no-startup-id "setxkbmap -model pc105 -layout us,ua,ru -option grp:lctrl_lshift_toggle"
 
 # swap windows key with alt key
 # exec_always setxkbmap -option 'altwin:swap_alt_win'
