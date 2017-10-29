@@ -33,14 +33,24 @@ nnoremap <leader>r :RangerWorkingDirectory<cr>
 set number
 set background=dark
 set rnu
+"toggle between relative and absolute number
+function! ToggleRelativeNumber()
+	if &relativenumber
+		set norelativenumber
+	else
+		set relativenumber
+	endif
+endfunction
+"use F3 to toggle between rnu and nu
+nmap <F3> :call ToggleRelativeNumber()<CR>
 syntax on
 set ruler
 set laststatus=2
 set list
-"set Ctrl-D and Ctrl-U to srcoll 10 lines instead of half a page
+"set Ctrl-D and Ctrl-U to srcoll 5 lines instead of half a page
+set scroll=5
 nnoremap J <C-d>
 nnoremap K <C-u>
-set scroll=5
 "hi SpecialKey ctermfg=white			hello     
 set listchars=tab:▸\ ,trail:~,extends:>,precedes:<
 "set listchars=eol:$,eol:¬,tab:>-,trail:~,extends:>,precedes:<
@@ -50,15 +60,16 @@ let g:netrw_winsize = 15
 let g:netrw_browse_split = 4
 set tabstop=4
 augroup BgHighlight
-autocmd!
-autocmd WinEnter * set cul
-autocmd WinLeave * set nocul
+	autocmd!
+	autocmd WinEnter * set cul
+	autocmd WinLeave * set nocul
 augroup END
 set autoindent
 set cindent
 set shiftwidth=4
 "Remap Escape for jj"
 inoremap jj <Esc>
+inoremap оо <Esc>
 "Auto close brackets"
 inoremap {<CR> {<CR>}<C-o>==<C-o>O
 set splitbelow
@@ -66,8 +77,8 @@ set splitright
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
 augroup vimrc
-au BufReadPre * setlocal foldmethod=indent
-au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
+	au BufReadPre * setlocal foldmethod=indent
+	au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
 augroup END
 "Remap folds opening"
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
