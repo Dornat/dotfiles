@@ -1,0 +1,124 @@
+if empty(glob('~/.vim/autoload/plug.vim'))
+	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+		\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')
+Plug 'vim-airline/vim-airline'
+call plug#end()
+
+"set hybrid line numbers
+set number
+set relativenumber
+"toggle between relative and absolute number
+function! ToggleRelativeNumber()
+    if &relativenumber
+        set number norelativenumber
+    else
+        set relativenumber
+    endif
+endfunction
+"use F3 to toggle between rnu and nu
+nmap <F5> :call ToggleRelativeNumber()<CR>
+"set working directory to allways be the same as the file you are editing
+set autochdir
+set background=dark
+syntax on
+set ruler
+"always show cursor position with underline
+set cul
+set laststatus=2
+set list
+"set Ctrl-D and Ctrl-U to srcoll 10 lines instead of half a page
+set scroll=5
+nnoremap <C-k> J
+nnoremap J 5<C-d>
+nnoremap K 5<C-u>
+"hi SpecialKey ctermfg=white            hello     
+set listchars=tab:▸\ ,trail:~,extends:>,precedes:<
+"set listchars=eol:$,eol:¬,tab:>-,trail:~,extends:>,precedes:<
+let g:netrw_liststyle = 3
+let g:netrw_banner = 0
+let g:netrw_winsize = 15
+let g:netrw_browse_split = 4
+set tabstop=4
+"show cursor position with underline only when 2+ windows open
+"augroup BgHighlight
+"autocmd!
+"autocmd WinEnter * set cul
+"autocmd WinLeave * set nocul
+"augroup END
+set autoindent
+set cindent
+set shiftwidth=4
+"Remap Escape for jj"
+inoremap jj <Esc>
+inoremap оо <Esc>
+"Auto close brackets"
+inoremap {<CR> {<CR>}<C-o>==<C-o>O
+set splitbelow
+set splitright
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+match OverLength /\%81v.\+/
+augroup vimrc
+au BufReadPre * setlocal foldmethod=indent
+au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
+augroup END
+"Remap folds opening"
+nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+vnoremap <Space> zf
+"Remap for easy buffer switch"
+nnoremap <C-n> :bnext<CR>
+nnoremap <C-p> :bprevious<CR>
+"For compilating and executing in vim, :make"
+"au BufEnter *.c compiler gcc
+"set makeprg=gcc\ \-Wall\ \-Wextra\ \-Werror\ %\ &&\ ./a.out
+set makeprg=make\ re\ &&\ ./maintest\ \\\|\ cat\ \-e
+nnoremap <C-m> :w<CR>:mak<CR>
+"For project specific .vimrc files"
+set exrc
+set secure
+"Save folds (actually saves everything you did before exiting vim)"
+au BufWinLeave * mkview
+au BufWinEnter * loadview
+"For Ukrainian keyboard layout (can't be wrapped in 80 columns)"
+set langmap='йцукенгшщзхїфівапролджєячсмитьбю~ЙЦУКЕHГШЩЗХЇФІВАПРОЛДЖЄЯЧСМИТЬБЮ;`qwertyuiop[]asdfghjkl\\;'zxcvbnm\\,.~QWERTYUIOP{}ASDFGHJKL:\\"ZXCVBNM<>
+"Set vim colors to 256"
+set t_Co=256
+
+"=======================================================================
+"=======                        MAPPINGS                        ========
+"=======================================================================
+
+"---With snippets---"
+
+"Creating an int    main(void) block by typing in insert mode ;imv"
+inoremap ,imv <Esc>:read $HOME/.vim/snippets/.intmainvoid.c<CR>2jA
+"Creating an int    main(int argc, char **argv)"
+inoremap ,imar <Esc>:read $HOME/.vim/snippets/.intmainargcargv.c<CR>2jA
+
+"---Without snippets---"
+
+inoremap ,, <Esc>0/<++><cr>"_c4l
+nnoremap ,, <Esc>0/<++><cr>"_c4l
+"printf(); with parentheses and appropriate cursor position"
+inoremap ,pf printf();<Esc>hi
+inoremap ,wr write(1, , <++>);<Esc>F,i
+"Adding symbols around the words
+vnoremap ,( c()<Esc>hp
+vnoremap ,[ c[]<Esc>hp
+vnoremap ,< c<><Esc>hp
+vnoremap ," c""<Esc>hp
+"Adding and deleting comments for a line
+vnoremap ,* c/*<cr>*/<Esc>hP
+vnoremap ,d* d"_dkP
+
+"ABBREVIATIONS"
+
+iabbrev stdioh #include <stdio.h>
+iabbrev unistdh #include <unistd.h>
+iabbrev stdlibh #include <stdlib.h>
+iabbrev stringh #include <string.h>
+iabbrev libfth #include "libft.h"
+iabbrev ctypeh #include <ctype.h>
