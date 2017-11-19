@@ -30,9 +30,9 @@ nnoremap <leader>r :RangerWorkingDirectory<cr>
 "=======						DEFAULTS						========
 "=======================================================================
 
-set number
+"set hybrid line numbers
+set number relativenumber
 set background=dark
-set rnu
 "toggle between relative and absolute number
 function! ToggleRelativeNumber()
 	if &relativenumber
@@ -43,27 +43,49 @@ function! ToggleRelativeNumber()
 endfunction
 "use F3 to toggle between rnu and nu
 nmap <F3> :call ToggleRelativeNumber()<CR>
+"set so=10
+"set working directory to allways be the same as the file you are editing
+set autochdir
 syntax on
 set ruler
+set cul
 set laststatus=2
 set list
 "set Ctrl-D and Ctrl-U to srcoll 5 lines instead of half a page
-set scroll=5
-nnoremap J <C-d>
-nnoremap K <C-u>
+"set scroll=5
+"nnoremap <C-d> 5<C-d>
+"nnoremap <C-u> 5<C-u>
+nnoremap J 5<C-d>
+nnoremap K 5<C-u>
 "hi SpecialKey ctermfg=white			hello     
 set listchars=tab:▸\ ,trail:~,extends:>,precedes:<
 "set listchars=eol:$,eol:¬,tab:>-,trail:~,extends:>,precedes:<
+"netrw plugin ("nerdtree")
 let g:netrw_liststyle = 3
 let g:netrw_banner = 0
 let g:netrw_winsize = 15
 let g:netrw_browse_split = 4
+" Toggle Vexplore with Ctrl-E
+function! ToggleVExplorer()
+	if exists("t:expl_buf_num")
+		let expl_win_num = bufwinnr(t:expl_buf_num)
+		if expl_win_num != -1
+			let cur_win_nr = winnr()
+			exec expl_win_num . 'wincmd w'
+			close
+			exec cur_win_nr . 'wincmd w'
+			unlet t:expl_buf_num
+		else
+			unlet t:expl_buf_num
+		endif
+	else
+		exec '1wincmd w'
+		Vexplore
+		let t:expl_buf_num = bufnr("%")
+	endif
+endfunction
+map <silent> <C-E> :call ToggleVExplorer()<CR>
 set tabstop=4
-augroup BgHighlight
-	autocmd!
-	autocmd WinEnter * set cul
-	autocmd WinLeave * set nocul
-augroup END
 set autoindent
 set cindent
 set shiftwidth=4
@@ -77,8 +99,8 @@ set splitright
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
 augroup vimrc
-	au BufReadPre * setlocal foldmethod=indent
-	au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
+	au BufReadPre ?* setlocal foldmethod=indent
+	au BufWinEnter ?* if &fdm == 'indent' | setlocal foldmethod=manual | endif
 augroup END
 "Remap folds opening"
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
@@ -93,8 +115,8 @@ set makeprg=gcc\ %\ &&\ ./a.out
 set exrc
 set secure
 "Save folds (actually saves everything you did before exiting vim)"
-au BufWinLeave * mkview
-au BufWinEnter * loadview
+au BufWinLeave ?* mkview 1
+au BufWinEnter ?* loadview 1
 "For Ukrainian keyboard layout (can't be wrapped in 80 columns)"
 set langmap='йцукенгшщзхїфівапролджєячсмитьбю~ЙЦУКЕHГШЩЗХЇФІВАПРОЛДЖЄЯЧСМИТЬБЮ;`qwertyuiop[]asdfghjkl\\;'zxcvbnm\\,.~QWERTYUIOP{}ASDFGHJKL:\\"ZXCVBNM<>
 "Set vim colors to 256"
@@ -118,6 +140,10 @@ nnoremap ,, <Esc>0/<++><cr>"_c4l
 "printf(); with parentheses and appropriate cursor position"
 inoremap ,pf printf();<Esc>hi
 inoremap ,wr write(1, , <++>);<Esc>F,i
+inoremap ,wh while ()<CR><++><Esc>ki
+inoremap ,if if ()<CR><++><Esc>ki
+inoremap ,ife if ()<CR><++><CR><Esc>ccelse<++><Esc>kki
+
 "Adding symbols around the words
 vnoremap ,( c()<Esc>hp
 vnoremap ,[ c[]<Esc>hp
