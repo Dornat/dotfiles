@@ -6,6 +6,7 @@ endif
 
 call plug#begin('~/.vim/plugged')
 Plug 'vim-airline/vim-airline'
+Plug 'https://github.com/altercation/vim-colors-solarized'
 call plug#end()
 
 "set hybrid line numbers
@@ -25,6 +26,9 @@ nmap <F5> :call ToggleRelativeNumber()<CR>
 set autochdir
 set background=dark
 syntax on
+colorscheme solarized
+"hide background color for nonprintible characters
+hi! SpecialKey cterm=none ctermbg=none
 set ruler
 "always show cursor position with underline
 set cul
@@ -42,6 +46,26 @@ let g:netrw_liststyle = 3
 let g:netrw_banner = 0
 let g:netrw_winsize = 15
 let g:netrw_browse_split = 4
+" Toggle Vexplore with Ctrl-E
+function! ToggleVExplorer()
+	if exists("t:expl_buf_num")
+		let expl_win_num = bufwinnr(t:expl_buf_num)
+		if expl_win_num != -1
+			let cur_win_nr = winnr()
+			exec expl_win_num . 'wincmd w'
+			close
+			exec cur_win_nr . 'wincmd w'
+			unlet t:expl_buf_num
+		else
+			unlet t:expl_buf_num
+		endif
+	else
+		exec '1wincmd w'
+		Vexplore
+		let t:expl_buf_num = bufnr("%")
+	endif
+endfunction
+map <silent> <C-E> :call ToggleVExplorer()<CR>
 set tabstop=4
 "show cursor position with underline only when 2+ windows open
 "augroup BgHighlight
@@ -56,7 +80,8 @@ set shiftwidth=4
 inoremap jj <Esc>
 inoremap оо <Esc>
 "Auto close brackets"
-inoremap {<CR> {<CR>}<C-o>==<C-o>O
+"inoremap {<CR> {<CR>}<C-o>==<C-o>O
+inoremap {<CR> {<CR><CR>}<Esc>kcc
 set splitbelow
 set splitright
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
@@ -74,7 +99,8 @@ nnoremap <C-p> :bprevious<CR>
 "For compilating and executing in vim, :make"
 "au BufEnter *.c compiler gcc
 "set makeprg=gcc\ \-Wall\ \-Wextra\ \-Werror\ %\ &&\ ./a.out
-set makeprg=make\ re\ &&\ ./maintest\ \\\|\ cat\ \-e
+"set makeprg=make\ re\ &&\ ./maintest\ \\\|\ cat\ \-e
+set makeprg=gcc\ \-Wall\ \-Wextra\ \-Werror\ libft.a\ %\ &&\ ./a.out\ \\\|\ cat\ \-e
 nnoremap <C-m> :w<CR>:mak<CR>
 "For project specific .vimrc files"
 set exrc
@@ -102,11 +128,15 @@ inoremap ,imar int		main(int ac, char **av)<CR>{<CR><CR><CR>}<Esc>ki	return(0);<
 
 "---Without snippets---"
 
-inoremap ,, <Esc>0/<++><cr>"_c4l
-nnoremap ,, <Esc>0/<++><cr>"_c4l
+inoremap ,, <Esc>0/<++><cr>"_c4l<Esc>:noh<CR>a
+nnoremap ,, <Esc>0/<++><cr>"_c4l<Esc>:noh<CR>a
 "printf(); with parentheses and appropriate cursor position"
-inoremap ,pf printf();<Esc>hi
+inoremap ,pf printf("\n", <++>);<Esc>F\i
 inoremap ,wr write(1, , <++>);<Esc>F,i
+inoremap ,wh while ()<CR><++><Esc>ki
+inoremap ,if if ()<CR><++><Esc>ki
+inoremap ,ife if ()<CR><++><CR><Esc>ccelse<++><Esc>kki
+inoremap ,$ $()<++><Esc>F)i
 "Adding symbols around the words
 vnoremap ,( c()<Esc>hp
 vnoremap ,[ c[]<Esc>hp
