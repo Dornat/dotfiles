@@ -1,0 +1,32 @@
+#!/bin/bash
+
+missing="msc: missing some arguments\nTry 'msc --help' for more information\n"
+helpv="--help"
+usage="usage: msc [row number or name in Makefile] [full path to the Makefile]\n"
+
+if (($# == 0)) || (($# > 2))
+then
+	printf "$missing"
+	exit 1
+fi
+
+firstarg=$1
+secondarg=$2
+num='^[0-9]+$'
+
+if [ "$firstarg" = "$helpv" ]
+then
+	printf "$usage"
+	exit 1
+fi
+
+ls *.c > test
+sed -i 's/$/ \\/' test
+sed -i 's/^/\	\	/' test
+if [[ $firstarg =~ $num ]]
+then
+	sed -i ''$firstarg'r test' "$secondarg"
+else
+	sed -i '/'$firstarg'/r test' "$secondarg"
+fi
+rm -f test
