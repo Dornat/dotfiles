@@ -1,10 +1,22 @@
 #!/bin/bash
 
-missing="msc: missing some arguments\nTry 'msc --help' for more information\n"
+missing="Usage: msc <rnum/name> <path> [path]
+Try 'msc --help' for more information\n"
 helpv="--help"
-usage="usage: msc [row number or name in Makefile] [full path to the Makefile]\n"
+usage="usage:
+  msc <rnum/name> <path> [path]
+Msc is the tiny script for explicitly adding all your c files to the Makefile.
+Just go to the folder with all your *.c files and run the script.
+  rnum/name     line number or string which will match a line in the Makefile
+  path          full path to the Makefile
+  [path]        optional argument. By default msc will search all *.c files in
+                the directory from which msc is being run, by adding this
+                optional path, msc will grep *.c files from the path and put
+                explicitly to Makefile *.c files with that path\n
+Caution! If you use NAME instead of RNUM msc will put your c files under every
+matched line\n"
 
-if (($# == 0)) || (($# > 2))
+if (($# == 0)) || (($# > 3))
 then
 	printf "$missing"
 	exit 1
@@ -12,6 +24,7 @@ fi
 
 firstarg=$1
 secondarg=$2
+thirdarg=$3
 num='^[0-9]+$'
 
 if [ "$firstarg" = "$helpv" ]
@@ -20,7 +33,7 @@ then
 	exit 1
 fi
 
-ls *.c > test
+ls $thirdarg*.c > test
 sed -i 's/$/ \\/' test
 sed -i 's/^/\	\	/' test
 if [[ $firstarg =~ $num ]]
