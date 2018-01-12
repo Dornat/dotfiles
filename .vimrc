@@ -10,6 +10,23 @@ Plug 'suan/vim-instant-markdown'
 Plug 'francoiscabrol/ranger.vim'
 call plug#end()
 
+"statusline test begin
+
+"set laststatus=2
+"set statusline=
+"set statusline+=%F\ 
+"set statusline+=%m\ 
+"set statusline+=%r\ 
+"set statusline+=%h\ 
+"set statusline+=%=
+"set statusline+=%y\ 
+"set statusline+=%l\/
+"set statusline+=%L\ 
+"set statusline+=\[b:\ %n\]
+
+"statusline test end
+
+
 let g:Powerline_colorscheme = 'solarized16_dark'
 let g:Powerline_symbols = 'fancy'
 set rtp+=~/.local/lib/python2.7/site-packages/powerline/bindings/vim/
@@ -30,6 +47,8 @@ nnoremap <leader>r :RangerWorkingDirectory<cr>
 "=======						DEFAULTS						========
 "=======================================================================
 
+set tags=./tags;
+
 "set hybrid line numbers
 set number relativenumber
 set background=dark
@@ -45,7 +64,7 @@ endfunction
 nmap <F3> :call ToggleRelativeNumber()<CR>
 "set so=10
 "set working directory to allways be the same as the file you are editing
-set autochdir
+"set autochdir
 syntax on
 set ruler
 set cul
@@ -97,7 +116,7 @@ inoremap {<CR> {<CR>}<C-o>==<C-o>O
 set splitbelow
 set splitright
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%81v.\+/
+match OverLength /\%<82v.\%>81v/
 augroup vimrc
 	au BufReadPre ?* setlocal foldmethod=indent
 	au BufWinEnter ?* if &fdm == 'indent' | setlocal foldmethod=manual | endif
@@ -128,27 +147,32 @@ set t_Co=256
 
 "---With snippets---"
 
-"Creating an int	main(void) block by typing in insert mode ;imv"
-inoremap ,imv <Esc>:read $HOME/.vim/snippets/.intmainvoid.c<CR>2jA
+"Creating an int	main(void) block by typing in insert mode ,imv"
+inoremap ,imv int		main(void)<CR>{<CR><CR><CR>}<Esc>ki	return(0);<Esc>kcc
+
 "Creating an int	main(int argc, char **argv)"
-inoremap ,imar <Esc>:read $HOME/.vim/snippets/.intmainargcargv.c<CR>2jA
+inoremap ,imar int		main(int ac, char **av)<CR>{<CR><CR><CR>}<Esc>ki	return(0);<Esc>kcc
 
 "---Without snippets---"
 
 inoremap ,, <Esc>0/<++><cr>"_c4l
 nnoremap ,, <Esc>0/<++><cr>"_c4l
-"printf(); with parentheses and appropriate cursor position"
-inoremap ,pf printf();<Esc>hi
+inoremap ,pf printf("\n", <++>);<Esc>F\i
 inoremap ,wr write(1, , <++>);<Esc>F,i
 inoremap ,wh while ()<CR><++><Esc>ki
 inoremap ,if if ()<CR><++><Esc>ki
-inoremap ,ife if ()<CR><++><CR><Esc>ccelse<++><Esc>kki
+inoremap ,( ()<++><Esc>F)i
+inoremap ,$ $()<++><Esc>F)i
 
-"Adding symbols around the words
+"Adding and deleting symbols around the words
 vnoremap ,( c()<Esc>hp
+vnoremap ,d( dvhp
 vnoremap ,[ c[]<Esc>hp
+vnoremap ,d[ dvhp
 vnoremap ,< c<><Esc>hp
+vnoremap ,d< dvhp
 vnoremap ," c""<Esc>hp
+vnoremap ,d" dvhp
 "Adding and deleting comments for a line
 vnoremap ,* c/*<cr>*/<Esc>hP
 vnoremap ,d* d"_dkP
@@ -159,3 +183,5 @@ iabbrev stdioh #include <stdio.h>
 iabbrev unistdh #include <unistd.h>
 iabbrev stdlibh #include <stdlib.h>
 iabbrev stringh #include <string.h>
+iabbrev libfth #include "libft.h"
+iabbrev ctypeh #include <ctype.h>

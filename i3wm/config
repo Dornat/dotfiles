@@ -150,10 +150,10 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym h resize shrink width 1 px or 1 ppt
-        bindsym j resize grow height 1 px or 1 ppt
-        bindsym k resize shrink height 1 px or 1 ppt
-        bindsym l resize grow width 1 px or 1 ppt
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
@@ -208,8 +208,11 @@ bindsym $mod+p workspace prev
 bindsym $mod+n workspace next
 bindsym $mod+d exec rofi -show run -lines 9 -eh 2 -width 100 -padding 300 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd"
 
-bindsym $mod+Shift+a exec --no-startup-id urxvt -e ranger
+bindsym $mod+Shift+a exec i3-sensible-terminal -e ranger
 bindsym $mod+c exec google-chrome; workspace $ws1
+bindsym $mod+shift+s exec gnome-screenshot -a
+bindsym $mod+y exec vlc ~/Videos/Ashtanga\ Yoga\ one\ hour\ intro\ class\ -\ With\ Fightmaster\ Yoga.mp4
+bindsym $mod+shift+t exec i3-sensible-terminal -e ~/Downloads/tor-browser_en-US/start-tor-browser.desktop
 
 # # Pulse Audio controls
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
@@ -235,6 +238,7 @@ exec --no-startup-id i3-msg 'workspace $ws2; exec /usr/bin/i3-sensible-terminal'
 #exec --no-startup-id i3-msg 'workspace $ws8; exec /usr/bin/i3-sensible-terminal -e ranger; bash'
 exec /home/dornat/Downloads/trash/Telegram/Telegram
 exec shutdown -h 21:35 --no-wall
+exec shutdown -h 23:42 --no-wall
 exec_always xrandr --output HDMI1 --off --output LVDS1 --mode 1366x768 --pos 0x0 --rotate normal --output VIRTUAL1 --off --output DP1 --off --output VGA1 --off
 
 # # Keyboard layout
