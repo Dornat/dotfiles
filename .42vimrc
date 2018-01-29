@@ -9,6 +9,11 @@ Plug 'vim-airline/vim-airline'
 Plug 'https://github.com/altercation/vim-colors-solarized'
 call plug#end()
 
+"tags usage
+set tags=tags;
+filetype plugin on
+set omnifunc=syntaxcomplete#Complete "omnicompletion
+
 "set hybrid line numbers
 set number
 set relativenumber
@@ -85,7 +90,7 @@ inoremap {<CR> {<CR><CR>}<Esc>kcc
 set splitbelow
 set splitright
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%81v.\+/
+match OverLength /\%81v./
 augroup vimrc
 au BufReadPre * setlocal foldmethod=indent
 au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
@@ -96,18 +101,31 @@ vnoremap <Space> zf
 "Remap for easy buffer switch"
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-p> :bprevious<CR>
+"<C-m> == <CR> (it's magic!)
+nnoremap <C-m> :w<CR>:<C-p><CR>
 "For compilating and executing in vim, :make"
 "au BufEnter *.c compiler gcc
 "set makeprg=gcc\ \-Wall\ \-Wextra\ \-Werror\ %\ &&\ ./a.out
-"set makeprg=make\ re\ &&\ ./maintest\ \\\|\ cat\ \-e
-set makeprg=gcc\ \-Wall\ \-Wextra\ \-Werror\ libft.a\ %\ &&\ ./a.out\ \\\|\ cat\ \-e
-nnoremap <C-m> :w<CR>:mak<CR>
+"set makeprg=cd\ \~/ft_printf/\ &&\ make\ re | cw
+"set makeprg=gcc\ \-Wall\ \-Wextra\ \-Werror\ libft.a\ %\ &&\ ./a.out\ \\\|\ cat\ \-e
+"nnoremap <C-m> :w<CR>:mak<CR>
 "For project specific .vimrc files"
 set exrc
 set secure
 "Save folds (actually saves everything you did before exiting vim)"
-au BufWinLeave * mkview
-au BufWinEnter * loadview
+"au BufWinLeave ?* mkview 1
+"au BufWinEnter ?* loadview 1
+augroup AutoSaveFolds
+	autocmd!
+	"view files are about 500 bytes
+	"bufleave but not bufwinleave captures closing 2nd tab
+	"nested is needed by bufwrite* (if triggered via other autocmd)
+	autocmd BufWinLeave,BufLeave,BufWritePost ?* nested silent! mkview!
+	autocmd BufWinEnter ?* silent loadview
+augroup end
+set viewoptions=folds,cursor
+set sessionoptions=folds
+
 "For Ukrainian keyboard layout (can't be wrapped in 80 columns)"
 set langmap='йцукенгшщзхїфівапролджєячсмитьбю~ЙЦУКЕHГШЩЗХЇФІВАПРОЛДЖЄЯЧСМИТЬБЮ;`qwertyuiop[]asdfghjkl\\;'zxcvbnm\\,.~QWERTYUIOP{}ASDFGHJKL:\\"ZXCVBNM<>
 "Set vim colors to 256"
@@ -132,11 +150,12 @@ inoremap ,, <Esc>0/<++><cr>"_c4l<Esc>:noh<CR>a
 nnoremap ,, <Esc>0/<++><cr>"_c4l<Esc>:noh<CR>a
 "printf(); with parentheses and appropriate cursor position"
 inoremap ,pf printf("\n", <++>);<Esc>F\i
+inoremap ,fpf ft_printf("\n", <++>);<Esc>F\i
 inoremap ,wr write(1, , <++>);<Esc>F,i
 inoremap ,wh while ()<CR><++><Esc>ki
 inoremap ,if if ()<CR><++><Esc>ki
-inoremap ,ife if ()<CR><++><CR><Esc>ccelse<++><Esc>kki
 inoremap ,$ $()<++><Esc>F)i
+inoremap /*<CR> /*<CR><Esc>0c$**<CR>*/<Esc>kA
 "Adding symbols around the words
 vnoremap ,( c()<Esc>hp
 vnoremap ,[ c[]<Esc>hp
@@ -154,3 +173,7 @@ iabbrev stdlibh #include <stdlib.h>
 iabbrev stringh #include <string.h>
 iabbrev libfth #include "libft.h"
 iabbrev ctypeh #include <ctype.h>
+
+iabbrev returN return
+iabbrev retur return
+iabbrev retu return
