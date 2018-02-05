@@ -28,7 +28,9 @@ endfunction
 "use F3 to toggle between rnu and nu
 nmap <F5> :call ToggleRelativeNumber()<CR>
 "set working directory to allways be the same as the file you are editing
-set autochdir
+"set autochdir
+autocmd BufEnter * silent! lcd %:p:h
+nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
 set background=dark
 syntax on
 colorscheme solarized
