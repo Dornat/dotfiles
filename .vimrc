@@ -1,10 +1,17 @@
+if empty(glob('~/.vim/autoload/plug.vim'))
+	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+		\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 "Vimplug"
 call plug#begin('~/.vim/plugged')
 Plug 'gabrielelana/vim-markdown'
 Plug 'altercation/vim-colors-solarized'
-Plug 'https://github.com/powerline/powerline'
+"Plug 'powerline/powerline'
 Plug 'stephenmckinney/vim-solarized-powerline'
 Plug 'vimwiki/vimwiki'
+Plug 'vim-airline/vim-airline'
 Plug 'mmai/vim-markdown-wiki'
 Plug 'suan/vim-instant-markdown'
 Plug 'francoiscabrol/ranger.vim'
@@ -29,7 +36,8 @@ call plug#end()
 
 let g:Powerline_colorscheme = 'solarized16_dark'
 let g:Powerline_symbols = 'fancy'
-set rtp+=~/.local/lib/python2.7/site-packages/powerline/bindings/vim/
+let g:airline_powerline_fonts = 1
+"set rtp+=~/.local/lib/python2.7/site-packages/powerline/bindings/vim/
 colorscheme solarized
 set nocompatible
 filetype plugin on
@@ -78,6 +86,7 @@ nnoremap J 5<C-d>
 nnoremap K 5<C-u>
 "hi SpecialKey ctermfg=white			hello     
 set listchars=tab:▸\ ,trail:~,extends:>,precedes:<
+highlight SpecialKey ctermbg=NONE
 "set listchars=eol:$,eol:¬,tab:>-,trail:~,extends:>,precedes:<
 "netrw plugin ("nerdtree")
 let g:netrw_liststyle = 3
@@ -129,7 +138,8 @@ nnoremap <C-n> :bnext<CR>
 nnoremap <C-p> :bprevious<CR>
 "For compilating and executing in vim, :make"
 au BufEnter *.c compiler gcc
-set makeprg=gcc\ %\ &&\ ./a.out
+"set makeprg=gcc\ %\ &&\ ./a.out
+nnoremap <C-m> :w<CR>:<C-p><CR>
 "For project specific .vimrc files"
 set exrc
 set secure
@@ -140,6 +150,7 @@ au BufWinEnter ?* loadview 1
 set langmap='йцукенгшщзхїфівапролджєячсмитьбю~ЙЦУКЕHГШЩЗХЇФІВАПРОЛДЖЄЯЧСМИТЬБЮ;`qwertyuiop[]asdfghjkl\\;'zxcvbnm\\,.~QWERTYUIOP{}ASDFGHJKL:\\"ZXCVBNM<>
 "Set vim colors to 256"
 set t_Co=256
+set encoding=utf-8
 
 "=======================================================================
 "=======						MAPPINGS						========
