@@ -38,6 +38,7 @@ fi
 ls $thirdarg*.c > test
 sed -i 's/$/ \\/' test
 sed -i 's/^/\	\	/' test
+sed -i ''$firstarg'G' "$secondarg"
 sed -i ''$blank',/^$/d;'$firstarg'G' "$secondarg"
 if [[ $firstarg =~ $num ]]
 then
