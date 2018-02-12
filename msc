@@ -27,6 +27,8 @@ secondarg=$2
 thirdarg=$3
 num='^[0-9]+$'
 
+blank=$(( $firstarg + 1 ))
+
 if [ "$firstarg" = "$helpv" ]
 then
 	printf "$usage"
@@ -36,6 +38,7 @@ fi
 ls $thirdarg*.c > test
 sed -i 's/$/ \\/' test
 sed -i 's/^/\	\	/' test
+sed -i ''$blank',/^$/d;'$firstarg'G' "$secondarg"
 if [[ $firstarg =~ $num ]]
 then
 	sed -i ''$firstarg'r test' "$secondarg"
