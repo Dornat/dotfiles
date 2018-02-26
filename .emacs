@@ -77,7 +77,7 @@
 
 ;; turn on bracket match highlight
 (show-paren-mode 1)
-
+0}
 ;; stop creating those #auto-save# files
 (setq auto-save-default nil)
 
@@ -92,7 +92,7 @@
 
 	))
 
-
+(global-set-key (kbd "M-*") 'pop-tag-mark)
 
 
  ;; (custom-set-faces
