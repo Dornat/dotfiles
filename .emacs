@@ -22,6 +22,13 @@
   :init
   (which-key-mode))
 
+(use-package beacon
+  :ensure t
+  :init
+  (beacon-mode 1))
+
+
+
 (put 'upcase-region 'disabled nil)
 
 ;; (setq-default tab-width 4)
@@ -43,7 +50,7 @@
 	("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(package-selected-packages
    (quote
-	(linum-relative solarized-theme which-key use-package))))
+	(beacon linum-relative solarized-theme which-key use-package))))
 
 ;; set a default font
 (when (member "Monaco" (font-family-list))
@@ -77,9 +84,18 @@
 
 ;; turn on bracket match highlight
 (show-paren-mode 1)
-0}
+
 ;; stop creating those #auto-save# files
 (setq auto-save-default nil)
+
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; ansi-term config
+(defvar my-term-shell "/bin/bash")
+(defadvice ansi-term (before force-bash)
+  (interactive (list my-term-shell)))
+(ad-activate 'ansi-term)
+
 
 ;; abbreviations
 (clear-abbrev-table global-abbrev-table)
@@ -92,7 +108,11 @@
 
 	))
 
+;; key sets
 (global-set-key (kbd "M-*") 'pop-tag-mark)
+(global-set-key (kbd "C-c M-t") 'ansi-term) ;; C-c M-t to run ansi-term
+
+
 
 
  ;; (custom-set-faces
