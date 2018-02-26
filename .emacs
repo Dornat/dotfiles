@@ -28,6 +28,34 @@
   (beacon-mode 1))
 
 
+;; IDO
+
+;; enable ido mode
+(setq ido-enable-flex-matching nil)
+(setq ido-create-new-buffer 'always)
+(setq ido-everywhere t)
+(ido-mode 1)
+
+;; ido-vertical
+(use-package ido-vertical-mode
+  :ensure t
+  :init
+  (ido-vertical-mode 1))
+(setq ido-vertical-define-keys 'C-n-and-C-p-only)
+
+;; smex
+(use-package smex
+  :ensure t
+  :init (smex-initialize)
+  :bind
+  ("M-x" . smex))
+
+;; enable ibuffer
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
+
+
+
 
 (put 'upcase-region 'disabled nil)
 
@@ -50,7 +78,7 @@
 	("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(package-selected-packages
    (quote
-	(beacon linum-relative solarized-theme which-key use-package))))
+	(smex ido-vertical-mode beacon linum-relative solarized-theme which-key use-package))))
 
 ;; set a default font
 (when (member "Monaco" (font-family-list))
@@ -60,7 +88,7 @@
 (global-set-key (kbd "C-<tab>") 'dabbrev-expand)
 (define-key minibuffer-local-map (kbd "C-<tab>") 'dabbrev-expand)
 
-(global-set-key (kbd "TAB") 'self-insert-command)
+(local-set-key (kbd "TAB") 'self-insert-command)
 (setq c-default-style "linux"
           c-basic-offset 4)
 (setq-default c-basic-offset 4
