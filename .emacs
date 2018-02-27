@@ -50,10 +50,61 @@
   :bind
   ("M-x" . smex))
 
+;; avy
+(use-package avy
+  :ensure t
+  :bind
+  ("M-s" . avy-goto-char))
+
+;; switch-window
+(use-package switch-window
+  :ensure t
+  :config
+  (setq switch-window-input-style 'minibuffer)
+  (setq switch-window-increase 4)
+  (setq switch-window-threshold 2)
+  (setq switch-window-shortcut-style 'qwerty)
+  (setq switch-window-qwerty-shortcuts
+		'("a" "s" "d" "f" "g" "h" "j" "k" "l"))
+  :bind
+  ("C-x o" . switch-window))
+
+;; hungry delete
+(use-package hungry-delete
+  :ensure t
+  :config (global-hungry-delete-mode))
+
+;; sudo edit
+(use-package sudo-edit
+  :ensure t
+  :bind ("C-c s e" . sudo-edit))
+
+;; rainbow delimiters
+ (use-package rainbow-delimiters
+  :ensure t
+  :init (rainbow-delimiters-mode 1))
+
+
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook)
+  (setq dashboard-items '((recents . 10))))
+
+
+
+
+
+;; kill whole word
+(defun kill-whole-word ()
+  (interactive)
+  (backward-word)
+  (kill-word 1))
+(global-set-key (kbd "C-c w w") 'kill-whole-word)
+
+
 ;; enable ibuffer
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-
-
 
 
 
@@ -78,7 +129,7 @@
 	("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(package-selected-packages
    (quote
-	(smex ido-vertical-mode beacon linum-relative solarized-theme which-key use-package))))
+	(dashboard rainbow-delimiters sudo-edit hungry-delete switch-window avy smex ido-vertical-mode beacon linum-relative solarized-theme which-key use-package))))
 
 ;; set a default font
 (when (member "Monaco" (font-family-list))
@@ -92,14 +143,19 @@
 (setq c-default-style "linux"
           c-basic-offset 4)
 (setq-default c-basic-offset 4
-                  tab-width 4
-                  indent-tabs-mode t)
+			  tab-width 4
+			  indent-tabs-mode t)
 
 ;; relative line number defined globally
 (require 'linum-relative)
 ;;(global-linum-mode 1)
 (linum-relative-global-mode 1)
 (setq linum-relative-current-symbol "")
+;; disable line numbers in shell and term
+(add-hook 'term-mode-hook (lambda ()
+							(setq-local linum-relative-global-mode
+										nil)))
+
 
 ;; toggle soft wrap for lines
 (global-visual-line-mode 1)
@@ -135,6 +191,12 @@
 	("imar" "int		main(int ac, char **av)")
 
 	))
+
+
+
+
+
+
 
 ;; key sets
 (global-set-key (kbd "M-*") 'pop-tag-mark)
