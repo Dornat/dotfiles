@@ -91,7 +91,25 @@
   (dashboard-setup-startup-hook)
   (setq dashboard-items '((recents . 10))))
 
+(use-package auto-complete
+  :ensure t
+  :config
+  (global-auto-complete-mode t))
 
+
+
+
+
+;; modeline setup
+(use-package smart-mode-line
+  :ensure t)
+
+(setq sml/no-confirm-load-theme t)
+(sml/setup)
+(setq column-number-mode t)
+
+;; show time on modeline
+(display-time-mode 1)
 
 
 
@@ -126,10 +144,10 @@
  '(custom-enabled-themes (quote (solarized-dark)))
  '(custom-safe-themes
    (quote
-	("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+	("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(package-selected-packages
    (quote
-	(dashboard rainbow-delimiters sudo-edit hungry-delete switch-window avy smex ido-vertical-mode beacon linum-relative solarized-theme which-key use-package))))
+	(color-theme smart-mode-line-powerline-theme smart-mode-line spaceline auto-complete dashboard rainbow-delimiters sudo-edit hungry-delete switch-window avy smex ido-vertical-mode beacon linum-relative solarized-theme which-key use-package))))
 
 ;; set a default font
 (when (member "Monaco" (font-family-list))
