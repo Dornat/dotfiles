@@ -226,7 +226,7 @@
 
 
 ;; abbreviations
-(clear-abbrev-table global-abbrev-table)
+;; (clear-abbrev-table global-abbrev-table)
 
 (define-abbrev-table 'global-abbrev-table
   '(
