@@ -1,0 +1,222 @@
+* Overall Appearance
+** IDO
+*** Enable ido mode
+#+BEGIN_SRC emacs-lisp
+(setq ido-enable-flex-matching nil)
+(setq ido-create-new-buffer 'always)
+(setq ido-everywhere t)
+(ido-mode 1)
+#+END_SRC
+*** Ido vertical
+#+BEGIN_SRC emacs-lisp
+(use-package ido-vertical-mode
+  :ensure t
+  :init
+  (ido-vertical-mode 1))
+(setq ido-vertical-define-keys 'C-n-and-C-p-only)
+#+END_SRC
+** smex
+#+BEGIN_SRC emacs-lisp
+(use-package smex
+  :ensure t
+  :init (smex-initialize)
+  :bind
+  ("M-x" . smex))
+#+END_SRC
+** rainbow-delimiters
+#+BEGIN_SRC emacs-lisp
+(use-package rainbow-delimiters
+  :ensure t
+  :init (rainbow-delimiters-mode 1))
+#+END_SRC
+** dashboard
+#+BEGIN_SRC emacs-lisp
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook)
+  (setq dashboard-items '((recents . 10))))
+#+END_SRC
+** which-key
+#+BEGIN_SRC emacs-lisp
+(use-package which-key
+  :ensure t
+  :init
+  (which-key-mode))
+#+END_SRC
+** beacon
+#+BEGIN_SRC emacs-lisp
+(use-package beacon
+  :ensure t
+  :init
+  (beacon-mode 1))
+#+END_SRC
+** modeline
+** line numbers
+#+BEGIN_SRC emacs-lisp
+(global-linum-mode 1)
+(add-hook 'term-mode-hook (lambda ()
+							(linum-mode -1)))
+(add-hook 'eshell-mode-hook (lambda ()
+							(linum-mode -1)))
+#+END_SRC
+** line wrap
+#+BEGIN_SRC emacs-lisp
+(global-visual-line-mode 1)
+#+END_SRC
+** brackets matching highlight
+#+BEGIN_SRC emacs-lisp
+(show-paren-mode 1)
+#+END_SRC
+** other
+#+BEGIN_SRC emacs-lisp
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(setq inhibit-startup-message t)
+(defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+*** modeline-setup
+#+BEGIN_SRC emacs-lisp
+(use-package smart-mode-line
+  :ensure t)
+(setq sml/no-confirm-load-theme t)
+(sml/setup)
+(setq column-number-mode t)
+#+END_SRC
+*** show time in modeline
+#+BEGIN_SRC emacs-lisp
+(display-time-mode 1)
+#+END_SRC
+* Advanced Movement
+** avy
+#+BEGIN_SRC emacs-lisp
+(use-package avy
+  :ensure t
+  :bind
+  ("M-s" . avy-goto-char)
+  ("C-c g" . avy-goto-line))
+#+END_SRC
+** switch-window
+#+BEGIN_SRC emacs-lisp
+(use-package switch-window
+  :ensure t
+  :config
+  (setq switch-window-input-style 'minibuffer)
+  (setq switch-window-increase 4)
+  (setq switch-window-threshold 2)
+  (setq switch-window-shortcut-style 'qwerty)
+  (setq switch-window-qwerty-shortcuts
+		'("a" "s" "d" "f" "g" "h" "j" "k" "l"))
+  :bind
+  ("C-x o" . switch-window))
+#+END_SRC
+** TAGS
+#+BEGIN_SRC emacs-lisp
+(use-package ggtags
+  :ensure t)
+
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+              (ggtags-mode 1))))
+#+END_SRC
+* Advanced Editing
+** auto-complete
+#+BEGIN_SRC emacs-lisp
+(use-package auto-complete
+  :ensure t
+  :config
+  (global-auto-complete-mode t))
+#+END_SRC
+** kill-whole-word
+#+BEGIN_SRC emacs-lisp
+(defun kill-whole-word ()
+  (interactive)
+  (backward-word)
+  (kill-word 1))
+(global-set-key (kbd "C-c w w") 'kill-whole-word)
+#+END_SRC
+** expand region
+#+BEGIN_SRC emacs-lisp
+(use-package expand-region
+  :ensure t)
+#+END_SRC
+** change inner
+*** init
+#+BEGIN_SRC emacs-lisp
+(use-package change-inner
+  :ensure t
+  :bind)
+#+END_SRC
+*** key bindings
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c w i") 'change-inner)
+(global-set-key (kbd "C-c w o") 'change-outer)
+
+(global-set-key (kbd "M-*") 'er/expand-region)
+(global-set-key (kbd "C-c w p") 'er/mark-inside-pairs)
+(global-set-key (kbd "C-c w P") 'er/mark-outside-pairs)
+#+END_SRC
+** auto insert closing brackets
+#+BEGIN_SRC emacs-lisp
+(electric-pair-mode 1)
+#+END_SRC
+** abbreviations
+#+BEGIN_SRC emacs-lisp
+(define-abbrev-table 'global-abbrev-table
+  '(
+
+	("imv" "int		main(void)")
+	("imar" "int		main(int ac, char **av)")
+
+	))
+#+END_SRC
+* Programming Specific
+** compilation
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "<f5>") (lambda ()
+                               (interactive)
+                               (setq-local compilation-read-command nil)
+                               (call-interactively 'compile)))
+#+END_SRC
+* Other
+** sudo-edit
+#+BEGIN_SRC emacs-lisp
+(use-package sudo-edit
+  :ensure t
+  :bind ("C-c s e" . sudo-edit))
+#+END_SRC
+
+** enable ibuffer
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+#+END_SRC
+** ansi-term
+#+BEGIN_SRC emacs-lisp
+(defvar my-term-shell "/bin/bash")
+(defadvice ansi-term (before force-bash)
+  (interactive (list my-term-shell)))
+(ad-activate 'ansi-term)
+#+END_SRC
+** key bindings
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "M-*") 'pop-tag-mark)
+(global-set-key (kbd "C-c M-t") 'ansi-term) ;; C-c M-t to run ansi-term
+#+END_SRC
+* Misc
+** tabs
+#+BEGIN_SRC emacs-lisp
+(setq-default tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60
+	  		  				 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120))
+(global-set-key (kbd "TAB") 'self-insert-command)
+(setq c-default-style "linux"
+          c-basic-offset 4)
+(setq-default c-basic-offset 4
+			  tab-width 4
+			  indent-tabs-mode t)
+#+END_SRC
+** other other
+#+BEGIN_SRC emacs-lisp
+(setq auto-save-default nil)
+#+END_SRC
