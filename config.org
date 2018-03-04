@@ -15,6 +15,18 @@
   (ido-vertical-mode 1))
 (setq ido-vertical-define-keys 'C-n-and-C-p-only)
 #+END_SRC
+*** flx-ido
+#+BEGIN_SRC emacs-lisp
+  (use-package flx-ido
+    :ensure t)
+
+  (ido-mode 1)
+  (ido-everywhere 1)
+  (flx-ido-mode 1)
+  ;; disable ido faces to see flx highlights.
+  (setq ido-enable-flex-matching t)
+  (setq ido-use-faces nil)
+#+END_SRC
 ** smex
 #+BEGIN_SRC emacs-lisp
 (use-package smex
@@ -96,17 +108,17 @@
 #+END_SRC
 ** switch-window
 #+BEGIN_SRC emacs-lisp
-(use-package switch-window
-  :ensure t
-  :config
-  (setq switch-window-input-style 'minibuffer)
-  (setq switch-window-increase 4)
-  (setq switch-window-threshold 2)
-  (setq switch-window-shortcut-style 'qwerty)
-  (setq switch-window-qwerty-shortcuts
-		'("a" "s" "d" "f" "g" "h" "j" "k" "l"))
-  :bind
-  ("C-x o" . switch-window))
+  (use-package switch-window
+    :ensure t
+    :config
+    (setq switch-window-input-style 'minibuffer)
+    (setq switch-window-increase 10)
+    (setq switch-window-threshold 2)
+    (setq switch-window-shortcut-style 'qwerty)
+    (setq switch-window-qwerty-shortcuts
+          '("a" "s" "d" "f" "g" "h" "j" "k" "l"))
+    :bind
+    ("C-x o" . switch-window))
 #+END_SRC
 ** TAGS
 #+BEGIN_SRC emacs-lisp
@@ -184,17 +196,7 @@
 #+END_SRC
 ** auto insert closing brackets
 #+BEGIN_SRC emacs-lisp
-(electric-pair-mode 1)
-#+END_SRC
-** abbreviations
-#+BEGIN_SRC emacs-lisp
-(define-abbrev-table 'global-abbrev-table
-  '(
-
-	("imv" "int		main(void)")
-	("imar" "int		main(int ac, char **av)")
-
-	))
+;;(electric-pair-mode 1)
 #+END_SRC
 ** undo tree
 #+BEGIN_SRC emacs-lisp
@@ -203,6 +205,26 @@
     :init
     (global-undo-tree-mode))
 #+END_SRC
+** smart parens
+#+BEGIN_SRC emacs-lisp
+  (use-package smartparens-config
+      :ensure smartparens
+      :config
+      (progn
+        (show-smartparens-global-mode t)))
+  ;to enable deleting with C-k only text but not parens, uncoment lines below
+  ;(add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
+  ;(add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
+  (global-set-key (kbd "C-c w b") 'sp-backward-unwrap-sexp)
+  (global-set-key (kbd "C-c w u") 'sp-unwrap-sexp)
+#+END_SRC
+** yasnippets
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :ensure t)
+  (yas-reload-all)
+  (add-hook 'prog-mode-hook #'yas-minor-mode)
+#+END_SRC
 * Programming Specific
 ** compilation
 #+BEGIN_SRC emacs-lisp
@@ -210,6 +232,13 @@
                                (interactive)
                                (setq-local compilation-read-command nil)
                                (call-interactively 'compile)))
+#+END_SRC
+** projectile
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :ensure t
+    :config
+    (projectile-mode t))
 #+END_SRC
 * Other
 ** sudo-edit
