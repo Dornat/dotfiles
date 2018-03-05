@@ -196,7 +196,7 @@
 #+END_SRC
 ** auto insert closing brackets
 #+BEGIN_SRC emacs-lisp
-;;(electric-pair-mode 1)
+(electric-pair-mode 1)
 #+END_SRC
 ** undo tree
 #+BEGIN_SRC emacs-lisp
