@@ -63,7 +63,15 @@
 #+END_SRC
 ** line numbers
 #+BEGIN_SRC emacs-lisp
-(global-linum-mode 1)
+;(global-linum-mode 1)
+;(add-hook 'term-mode-hook (lambda ()
+;							(linum-mode -1)))
+;(add-hook 'eshell-mode-hook (lambda ()
+;							(linum-mode -1)))
+#+END_SRC
+*** line relative
+#+BEGIN_SRC emacs-lisp
+(linum-relative-global-mode 1)
 (add-hook 'term-mode-hook (lambda ()
 							(linum-mode -1)))
 (add-hook 'eshell-mode-hook (lambda ()
@@ -100,11 +108,23 @@
 * Advanced Movement
 ** avy
 #+BEGIN_SRC emacs-lisp
-(use-package avy
-  :ensure t
-  :bind
-  ("M-s" . avy-goto-char)
-  ("C-c g" . avy-goto-line))
+  (use-package avy
+    :ensure t
+    :bind
+    ("M-s" . avy-goto-char)
+    ("C-c g" . avy-goto-line)
+    ("C-;" . avy-goto-char-2))
+#+END_SRC
+** swiper
+#+BEGIN_SRC emacs-lisp
+  (use-package swiper
+    :ensure t
+    :config
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (setq enable-recursive-minibuffers t)
+    (global-set-key "\C-s" 'swiper)
+    (global-set-key (kbd "C-c C-r") 'ivy-resume))
 #+END_SRC
 ** switch-window
 #+BEGIN_SRC emacs-lisp
@@ -130,7 +150,7 @@
             (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
               (ggtags-mode 1))))
 #+END_SRC
-** scroll hald a page
+** scroll half a page
 #+BEGIN_SRC emacs-lisp
 (defun zz-scroll-half-page (direction)
   "Scrolls half page up if `direction' is non-nil, otherwise will scroll half page down."
