@@ -63,19 +63,22 @@
 #+END_SRC
 ** line numbers
 #+BEGIN_SRC emacs-lisp
-;(global-linum-mode 1)
-;(add-hook 'term-mode-hook (lambda ()
-;							(linum-mode -1)))
-;(add-hook 'eshell-mode-hook (lambda ()
-;							(linum-mode -1)))
-#+END_SRC
-*** line relative
-#+BEGIN_SRC emacs-lisp
-(linum-relative-global-mode 1)
+(global-linum-mode 1)
 (add-hook 'term-mode-hook (lambda ()
 							(linum-mode -1)))
 (add-hook 'eshell-mode-hook (lambda ()
 							(linum-mode -1)))
+#+END_SRC
+*** line relative
+#+BEGIN_SRC emacs-lisp
+  (use-package linum-relative
+    :ensure t)
+  (linum-relative-global-mode 1)
+  (setq linum-relative-current-symbol "")
+  (add-hook 'term-mode-hook (lambda ()
+                              (linum-mode -1)))
+  (add-hook 'eshell-mode-hook (lambda ()
+                                (linum-mode -1)))
 #+END_SRC
 ** line wrap
 #+BEGIN_SRC emacs-lisp
@@ -111,9 +114,8 @@
   (use-package avy
     :ensure t
     :bind
-    ("M-s" . avy-goto-char)
-    ("C-c g" . avy-goto-line)
-    ("C-;" . avy-goto-char-2))
+    ("M-s" . avy-goto-char-2)
+    ("C-c g" . avy-goto-line))
 #+END_SRC
 ** swiper
 #+BEGIN_SRC emacs-lisp
@@ -177,6 +179,36 @@
 (global-set-key (kbd "M-n") 'zz-scroll-half-page-down)
 (global-set-key (kbd "M-p") 'zz-scroll-half-page-up)
 #+END_SRC
+** evil??
+#+BEGIN_SRC emacs-lisp
+  (use-package evil
+    :ensure t
+    :config
+    (evil-mode t))
+
+  (use-package evil-escape
+    :ensure t
+    :config
+    (evil-escape-mode)
+    (setq-default evil-escape-key-sequence "jj")
+    (setq-default evil-escape-delay 0.2))
+
+  (use-package evil-org
+    :ensure t
+    :after org
+    :config
+    (add-hook 'org-mode-hook 'evil-org-mode)
+    (add-hook 'evil-org-mode-hook
+              (lambda ()
+                (evil-org-set-key-theme))))
+
+  ;; @see https://bitbucket.org/lyro/evil/issue/511/let-certain-minor-modes-key-bindings
+  (eval-after-load 'ggtags
+    '(progn
+       (evil-make-overriding-map ggtags-mode-map 'normal)
+       ;; force update evil keymaps after ggtags-mode loaded
+       (add-hook 'ggtags-mode-hook #'evil-normalize-keymaps)))
+#+END_SRC
 * Advanced Editing
 ** auto-complete
 #+BEGIN_SRC emacs-lisp
@@ -184,6 +216,41 @@
   :ensure t
   :config
   (global-auto-complete-mode t))
+#+END_SRC
+** company
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :ensure t
+    :config
+    (setq-default company-show-numbers          1)
+    (setq-default company-idle-delay            0) ; start completion immediately
+    (setq-default company-minimum-prefix-length 1) ; start completion after 1 character.
+    (setq-default company-tooltip-align-annotations t)
+    (global-company-mode t))
+
+  (use-package company-c-headers
+    :ensure t)
+  (add-to-list 'company-backends 'company-c-headers)
+
+  (use-package company-irony
+    :ensure t)
+  (eval-after-load 'company
+    '(add-to-list 'company-backends 'company-irony))
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'objc-mode-hook 'irony-mode)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+  (use-package flycheck
+    :ensure t
+    :config
+    (global-flycheck-mode t))
+
+  (use-package flycheck-irony
+    :ensure t)
+
+  (eval-after-load 'flycheck
+    '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 #+END_SRC
 ** kill-whole-word
 #+BEGIN_SRC emacs-lisp
