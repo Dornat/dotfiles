@@ -15,7 +15,6 @@ filetype plugin on
 set omnifunc=syntaxcomplete#Complete "omnicompletion
 
 "set hybrid line numbers
-set number
 set relativenumber
 "toggle between relative and absolute number
 function! ToggleRelativeNumber()
@@ -83,8 +82,8 @@ set tabstop=4
 set autoindent
 set cindent
 set shiftwidth=4
-"Remap Escape for jj"
-inoremap jj <Esc>
+"Remap Escape for kj"
+inoremap kj <Esc>
 inoremap оо <Esc>
 "Auto close brackets"
 "inoremap {<CR> {<CR>}<C-o>==<C-o>O
@@ -173,8 +172,19 @@ iabbrev stdioh #include <stdio.h>
 iabbrev unistdh #include <unistd.h>
 iabbrev stdlibh #include <stdlib.h>
 iabbrev stringh #include <string.h>
-iabbrev libfth #include "libft.h"
+iabbrev libfth #include <libft.h>
 iabbrev ctypeh #include <ctype.h>
+iabbrev cursesh #include <curses.h>
+iabbrev termh #include <term.h>
+iabbrev termiosh #include <termios.h>
+iabbrev termcaph #include <termcap.h>
+iabbrev fcntlh #include <fcntl.h>
+iabbrev systypesh #include <sys/types.h>
+iabbrev sysuioh #include <sys/uio.h>
+iabbrev sysstath #include <sys/stat.h>
+iabbrev syswaith #include <sys/wait.h>
+iabbrev direnth #include <dirent.h>
+iabbrev signalh #include <signal.h>
 
 iabbrev returN return
 iabbrev retur return
