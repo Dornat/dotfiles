@@ -1,0 +1,177 @@
+"tags usage
+set tags=tags;
+filetype plugin on
+set omnifunc=syntaxcomplete#Complete "omnicompletion
+
+"set hybrid line numbers
+set relativenumber
+"toggle between relative and absolute number
+function! ToggleRelativeNumber()
+    if &relativenumber
+        set number norelativenumber
+    else
+        set relativenumber
+    endif
+endfunction
+"use F3 to toggle between rnu and nu
+nmap <F5> :call ToggleRelativeNumber()<CR>
+"set working directory to allways be the same as the file you are editing
+"set autochdir
+autocmd BufEnter * silent! lcd %:p:h
+nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
+set background=dark
+syntax on
+"hide background color for nonprintible characters
+hi! SpecialKey cterm=none ctermbg=none
+set ruler
+"always show cursor position with underline
+set cul
+set laststatus=2
+set list
+"set Ctrl-D and Ctrl-U to srcoll 10 lines instead of half a page
+set scroll=5
+nnoremap <C-k> J
+nnoremap J 5<C-d>
+nnoremap K 5<C-u>
+"hi SpecialKey ctermfg=white            hello     
+set listchars=tab:>-,trail:~,extends:>,precedes:<
+"set listchars=eol:$,eol:¬,tab:>-,trail:~,extends:>,precedes:<
+let g:netrw_liststyle = 3
+let g:netrw_banner = 0
+let g:netrw_winsize = 15
+let g:netrw_browse_split = 4
+" Toggle Vexplore with Ctrl-E
+function! ToggleVExplorer()
+	if exists("t:expl_buf_num")
+		let expl_win_num = bufwinnr(t:expl_buf_num)
+		if expl_win_num != -1
+			let cur_win_nr = winnr()
+			exec expl_win_num . 'wincmd w'
+			close
+			exec cur_win_nr . 'wincmd w'
+			unlet t:expl_buf_num
+		else
+			unlet t:expl_buf_num
+		endif
+	else
+		exec '1wincmd w'
+		Vexplore
+		let t:expl_buf_num = bufnr("%")
+	endif
+endfunction
+map <silent> <C-E> :call ToggleVExplorer()<CR>
+set tabstop=4
+"show cursor position with underline only when 2+ windows open
+"augroup BgHighlight
+"autocmd!
+"autocmd WinEnter * set cul
+"autocmd WinLeave * set nocul
+"augroup END
+set autoindent
+set cindent
+set shiftwidth=4
+"Remap Escape for kj"
+inoremap kj <Esc>
+inoremap оо <Esc>
+"Auto close brackets"
+"inoremap {<CR> {<CR>}<C-o>==<C-o>O
+inoremap {<CR> {<CR><CR>}<Esc>kcc
+set splitbelow
+set splitright
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+match OverLength /\%81v./
+augroup vimrc
+au BufReadPre * setlocal foldmethod=indent
+au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
+augroup END
+"Remap folds opening"
+nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+vnoremap <Space> zf
+"Remap for easy buffer switch"
+nnoremap <C-n> :bnext<CR>
+nnoremap <C-p> :bprevious<CR>
+"<C-m> == <CR> (it's magic!)
+nnoremap <C-m> :w<CR>:<C-p><CR>
+"For compilating and executing in vim, :make"
+"au BufEnter *.c compiler gcc
+"set makeprg=gcc\ \-Wall\ \-Wextra\ \-Werror\ %\ &&\ ./a.out
+"set makeprg=cd\ \~/ft_printf/\ &&\ make\ re | cw
+"set makeprg=gcc\ \-Wall\ \-Wextra\ \-Werror\ libft.a\ %\ &&\ ./a.out\ \\\|\ cat\ \-e
+"nnoremap <C-m> :w<CR>:mak<CR>
+"For project specific .vimrc files"
+set exrc
+set secure
+"Save folds (actually saves everything you did before exiting vim)"
+"au BufWinLeave ?* mkview 1
+"au BufWinEnter ?* loadview 1
+augroup AutoSaveFolds
+	autocmd!
+	"view files are about 500 bytes
+	"bufleave but not bufwinleave captures closing 2nd tab
+	"nested is needed by bufwrite* (if triggered via other autocmd)
+	autocmd BufWinLeave,BufLeave,BufWritePost ?* nested silent! mkview!
+	autocmd BufWinEnter ?* silent loadview
+augroup end
+set viewoptions=folds,cursor
+set sessionoptions=folds
+
+"Set vim colors to 256"
+set t_Co=256
+
+"=======================================================================
+"=======                        MAPPINGS                        ========
+"=======================================================================
+
+"---With snippets---"
+
+"Creating an int    main(void) block by typing in insert mode ;imv"
+"inoremap ,imv <Esc>:read $HOME/.vim/snippets/.intmainvoid.c<CR>2jA
+inoremap ,imv int		main(void)<CR>{<CR><CR><CR>}<Esc>ki	return(0);<Esc>ki	
+"Creating an int    main(int argc, char **argv)"
+"inoremap ,imar <Esc>:read $HOME/.vim/snippets/.intmainargcargv.c<CR>2jA
+inoremap ,imar int		main(int ac, char **av)<CR>{<CR><CR><CR>}<Esc>ki	return(0);<Esc>ki	
+
+"---Without snippets---"
+
+inoremap ,, <Esc>0/<++><cr>"_c4l<Esc>:noh<CR>a
+nnoremap ,, <Esc>0/<++><cr>"_c4l<Esc>:noh<CR>a
+"printf(); with parentheses and appropriate cursor position"
+inoremap ,pf printf("\n", <++>);<Esc>F\i
+inoremap ,fpf ft_printf("\n", <++>);<Esc>F\i
+inoremap ,wr write(1, , <++>);<Esc>F,i
+inoremap ,wh while ()<CR><++><Esc>ki
+inoremap ,if if ()<CR><++><Esc>ki
+inoremap ,$ $()<++><Esc>F)i
+inoremap /*<CR> /*<CR><Esc>0c$**<CR>*/<Esc>kA
+"Adding symbols around the words
+vnoremap ,( c()<Esc>hp
+vnoremap ,[ c[]<Esc>hp
+vnoremap ,< c<><Esc>hp
+vnoremap ," c""<Esc>hp
+"Adding and deleting comments for a line
+vnoremap ,* c/*<cr>*/<Esc>hP
+vnoremap ,d* d"_dkP
+
+"ABBREVIATIONS"
+
+iabbrev stdioh #include <stdio.h>
+iabbrev unistdh #include <unistd.h>
+iabbrev stdlibh #include <stdlib.h>
+iabbrev stringh #include <string.h>
+iabbrev libfth #include <libft.h>
+iabbrev ctypeh #include <ctype.h>
+iabbrev cursesh #include <curses.h>
+iabbrev termh #include <term.h>
+iabbrev termiosh #include <termios.h>
+iabbrev termcaph #include <termcap.h>
+iabbrev fcntlh #include <fcntl.h>
+iabbrev systypesh #include <sys/types.h>
+iabbrev sysuioh #include <sys/uio.h>
+iabbrev sysstath #include <sys/stat.h>
+iabbrev syswaith #include <sys/wait.h>
+iabbrev direnth #include <dirent.h>
+iabbrev signalh #include <signal.h>
+
+iabbrev returN return
+iabbrev retur return
+iabbrev retu return
