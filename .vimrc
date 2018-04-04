@@ -15,6 +15,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'mmai/vim-markdown-wiki'
 Plug 'suan/vim-instant-markdown'
 Plug 'francoiscabrol/ranger.vim'
+Plug 'shawncplus/phpcomplete.vim'
+Plug 'ervandew/supertab'
 call plug#end()
 
 "statusline test begin
@@ -32,6 +34,13 @@ call plug#end()
 "set statusline+=\[b:\ %n\]
 
 "statusline test end
+
+"PHP autocompletion
+autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
+"longest makes Vim only autocomplete up to the 'longest' string that all the completions have in common and 'menuone' makes the menu spawn even if there is only one result
+set completeopt=longest,menuone
+"triggering autocomplition through Tab
+let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 
 
 let g:Powerline_colorscheme = 'solarized16_dark'
@@ -118,7 +127,7 @@ set autoindent
 set cindent
 set shiftwidth=4
 "Remap Escape for jj"
-inoremap jj <Esc>
+inoremap kj <Esc>
 inoremap оо <Esc>
 "Auto close brackets"
 inoremap {<CR> {<CR>}<C-o>==<C-o>O
@@ -169,6 +178,7 @@ inoremap ,imar int		main(int ac, char **av)<CR>{<CR><CR><CR>}<Esc>ki	return(0);<
 inoremap ,, <Esc>0/<++><cr>"_c4l
 nnoremap ,, <Esc>0/<++><cr>"_c4l
 inoremap ,pf printf("\n", <++>);<Esc>F\i
+inoremap ,fpf ft_printf("\n", <++>);<Esc>F\i
 inoremap ,wr write(1, , <++>);<Esc>F,i
 inoremap ,wh while ()<CR><++><Esc>ki
 inoremap ,if if ()<CR><++><Esc>ki
@@ -196,3 +206,8 @@ iabbrev stdlibh #include <stdlib.h>
 iabbrev stringh #include <string.h>
 iabbrev libfth #include "libft.h"
 iabbrev ctypeh #include <ctype.h>
+
+iabbrev cahr char
+iabbrev carh char
+iabbrev returN return
+iabbrev retur return
