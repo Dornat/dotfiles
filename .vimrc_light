@@ -1,14 +1,3 @@
-if empty(glob('~/.vim/autoload/plug.vim'))
-	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-		\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
-call plug#begin('~/.vim/plugged')
-Plug 'vim-airline/vim-airline'
-Plug 'https://github.com/altercation/vim-colors-solarized'
-call plug#end()
-
 "tags usage
 set tags=tags;
 filetype plugin on
@@ -32,7 +21,6 @@ autocmd BufEnter * silent! lcd %:p:h
 nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
 set background=dark
 syntax on
-colorscheme solarized
 "hide background color for nonprintible characters
 hi! SpecialKey cterm=none ctermbg=none
 set ruler
@@ -46,7 +34,7 @@ nnoremap <C-k> J
 nnoremap J 5<C-d>
 nnoremap K 5<C-u>
 "hi SpecialKey ctermfg=white            hello     
-set listchars=tab:▸\ ,trail:~,extends:>,precedes:<
+set listchars=tab:>-,trail:~,extends:>,precedes:<
 "set listchars=eol:$,eol:¬,tab:>-,trail:~,extends:>,precedes:<
 let g:netrw_liststyle = 3
 let g:netrw_banner = 0
@@ -127,8 +115,6 @@ augroup end
 set viewoptions=folds,cursor
 set sessionoptions=folds
 
-"For Ukrainian keyboard layout (can't be wrapped in 80 columns)"
-set langmap='йцукенгшщзхїфівапролджєячсмитьбю~ЙЦУКЕHГШЩЗХЇФІВАПРОЛДЖЄЯЧСМИТЬБЮ;`qwertyuiop[]asdfghjkl\\;'zxcvbnm\\,.~QWERTYUIOP{}ASDFGHJKL:\\"ZXCVBNM<>
 "Set vim colors to 256"
 set t_Co=256
 
