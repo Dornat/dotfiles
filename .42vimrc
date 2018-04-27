@@ -193,12 +193,12 @@ inoremap ,, <Esc>0/<++><cr>"_c4l<Esc>:noh<CR>a
 nnoremap ,, <Esc>0/<++><cr>"_c4l<Esc>:noh<CR>a
 "printf(); with parentheses and appropriate cursor position"
 inoremap ,pf printf("\n", <++>);<Esc>F\i
-inoremap ,fpf ft_printf("\n", <++>);<Esc>F\i
-inoremap ,wr write(1, , <++>);<Esc>F,i
-inoremap ,wh while ()<CR><++><Esc>ki
+autocmd FileType c inoremap ,fpf ft_printf("\n", <++>);<Esc>F\i
+autocmd FileType c inoremap ,wr write(1, , <++>);<Esc>F,i
+autocmd FileType c inoremap ,wh while ()<CR><++><Esc>ki
 inoremap ,if if ()<CR><++><Esc>ki
 inoremap ,$ $()<++><Esc>F)i
-inoremap /*<CR> /*<CR><Esc>0c$**<CR>*/<Esc>kA
+autocmd FileType c inoremap /*<CR> /*<CR><Esc>0c$**<CR>*/<Esc>kA
 "Adding symbols around the words
 vnoremap ,( c()<Esc>hp
 vnoremap ,[ c[]<Esc>hp
@@ -208,11 +208,14 @@ vnoremap ," c""<Esc>hp
 vnoremap ,* c/*<cr>*/<Esc>hP
 vnoremap ,d* d"_dkP
 
-"php <? autocompl
+"-----php,js remaps and abbrevs-----
 inoremap ,? <?php?><Esc>F?i
 inoremap <C-f> <Right>
 inoremap <C-b> <Left>
 inoremap ( ()<Esc>i
+autocmd FileType php,javascript inoremap ,f function 
+autocmd FileType php inoremap ,pf public function 
+autocmd FileType javascript inoremap ,cl console.log();<Esc>hi
 
 "ABBREVIATIONS"
 
