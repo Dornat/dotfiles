@@ -7,15 +7,54 @@ endif
 call plug#begin('~/.vim/plugged')
 Plug 'vim-airline/vim-airline'
 Plug 'https://github.com/altercation/vim-colors-solarized'
+Plug 'shawncplus/phpcomplete.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'StanAngeloff/php.vim'
+Plug 'vim-syntastic/syntastic'
+Plug 'alvan/vim-closetag'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'ap/vim-css-color'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
+Plug 'pangloss/vim-javascript'
 call plug#end()
 
-"tags usage
+"=====NERDtree=====
+map <C-E> :NERDTreeToggle<CR>
+"close vim if only NERDtree window is left
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"enable line numbers
+let NERDTreeShowLineNumbers=1
+"make shure relative line numbers are used
+autocmd FileType nerdtree setlocal relativenumber
+
+"=====PHP autocompletion=====
+autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
+"longest makes Vim only autocomplete up to the 'longest' string that all the completions have in common and 'menuone' makes the menu spawn even if there is only one result
+set completeopt=longest,menuone
+
+
+"=====Syntastic=====
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+"=====vim-closetag=====
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml, *.php'
+
+"-----tags usage-----
 set tags=tags;
 filetype plugin on
 set omnifunc=syntaxcomplete#Complete "omnicompletion
 
 "set hybrid line numbers
 set relativenumber
+set nu
+
 "toggle between relative and absolute number
 function! ToggleRelativeNumber()
     if &relativenumber
@@ -48,30 +87,33 @@ nnoremap K 5<C-u>
 "hi SpecialKey ctermfg=white            hello     
 set listchars=tab:▸\ ,trail:~,extends:>,precedes:<
 "set listchars=eol:$,eol:¬,tab:>-,trail:~,extends:>,precedes:<
-let g:netrw_liststyle = 3
-let g:netrw_banner = 0
-let g:netrw_winsize = 15
-let g:netrw_browse_split = 4
-" Toggle Vexplore with Ctrl-E
-function! ToggleVExplorer()
-	if exists("t:expl_buf_num")
-		let expl_win_num = bufwinnr(t:expl_buf_num)
-		if expl_win_num != -1
-			let cur_win_nr = winnr()
-			exec expl_win_num . 'wincmd w'
-			close
-			exec cur_win_nr . 'wincmd w'
-			unlet t:expl_buf_num
-		else
-			unlet t:expl_buf_num
-		endif
-	else
-		exec '1wincmd w'
-		Vexplore
-		let t:expl_buf_num = bufnr("%")
-	endif
-endfunction
-map <silent> <C-E> :call ToggleVExplorer()<CR>
+
+"-----netrw configuration-----
+"let g:netrw_liststyle = 3
+"let g:netrw_banner = 0
+"let g:netrw_winsize = 15
+"let g:netrw_browse_split = 4
+"" Toggle Vexplore with Ctrl-E
+"function! ToggleVExplorer()
+"	if exists("t:expl_buf_num")
+"		let expl_win_num = bufwinnr(t:expl_buf_num)
+"		if expl_win_num != -1
+"			let cur_win_nr = winnr()
+"			exec expl_win_num . 'wincmd w'
+"			close
+"			exec cur_win_nr . 'wincmd w'
+"			unlet t:expl_buf_num
+"		else
+"			unlet t:expl_buf_num
+"		endif
+"	else
+"		exec '1wincmd w'
+"		Vexplore
+"		let t:expl_buf_num = bufnr("%")
+"	endif
+"endfunction
+"map <silent> <C-E> :call ToggleVExplorer()<CR>
+
 set tabstop=4
 "show cursor position with underline only when 2+ windows open
 "augroup BgHighlight
@@ -165,6 +207,12 @@ vnoremap ," c""<Esc>hp
 "Adding and deleting comments for a line
 vnoremap ,* c/*<cr>*/<Esc>hP
 vnoremap ,d* d"_dkP
+
+"php <? autocompl
+inoremap ,? <?php?><Esc>F?i
+inoremap <C-f> <Right>
+inoremap <C-b> <Left>
+inoremap ( ()<Esc>i
 
 "ABBREVIATIONS"
 
