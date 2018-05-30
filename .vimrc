@@ -4,110 +4,94 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-"Vimplug"
 call plug#begin('~/.vim/plugged')
-Plug 'gabrielelana/vim-markdown'
-Plug 'altercation/vim-colors-solarized'
-"Plug 'powerline/powerline'
-Plug 'stephenmckinney/vim-solarized-powerline'
-Plug 'vimwiki/vimwiki'
 Plug 'vim-airline/vim-airline'
-Plug 'mmai/vim-markdown-wiki'
-Plug 'suan/vim-instant-markdown'
-Plug 'francoiscabrol/ranger.vim'
+Plug 'https://github.com/altercation/vim-colors-solarized'
 Plug 'shawncplus/phpcomplete.vim'
-Plug 'ervandew/supertab'
 Plug 'scrooloose/nerdtree'
+Plug 'StanAngeloff/php.vim'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'ap/vim-css-color'
+Plug 'alvan/vim-closetag'
+Plug 'pangloss/vim-javascript'
+Plug 'jwalton512/vim-blade'
+Plug 'leafgarland/typescript-vim'
+Plug 'morhetz/gruvbox'
+Plug 'tpope/vim-commentary'
 call plug#end()
 
-"=======================================================================
-"=======						NERDtree						========
-"=======================================================================
-
+"=====NERDtree=====
 map <C-E> :NERDTreeToggle<CR>
-
 "close vim if only NERDtree window is left
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"enable line numbers
+let NERDTreeShowLineNumbers=1
+"make shure relative line numbers are used
+autocmd FileType nerdtree setlocal relativenumber
 
-"statusline test begin
-
-"set laststatus=2
-"set statusline=
-"set statusline+=%F\ 
-"set statusline+=%m\ 
-"set statusline+=%r\ 
-"set statusline+=%h\ 
-"set statusline+=%=
-"set statusline+=%y\ 
-"set statusline+=%l\/
-"set statusline+=%L\ 
-"set statusline+=\[b:\ %n\]
-
-"statusline test end
-
-"PHP autocompletion
+"=====PHP autocompletion=====
 autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
 "longest makes Vim only autocomplete up to the 'longest' string that all the completions have in common and 'menuone' makes the menu spawn even if there is only one result
 set completeopt=longest,menuone
-"triggering autocomplition through Tab
-let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 
 
-let g:Powerline_colorscheme = 'solarized16_dark'
-let g:Powerline_symbols = 'fancy'
-let g:airline_powerline_fonts = 1
-"set rtp+=~/.local/lib/python2.7/site-packages/powerline/bindings/vim/
-colorscheme solarized
-set nocompatible
+"=====Syntastic=====
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+"=====vim-closetag=====
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml, *.php'
+
+"-----tags usage-----
+set tags=tags;
 filetype plugin on
-"for vimwiki plugin, to use murkdown instead of wiki
-let g:vimwiki_list = [{'path': '~/vimwiki/',
-						\ 'syntax': 'markdown', 'ext': '.md'}]
-nnoremap <BS> :MdwiReturn<cr>
-"Instant markdown plugin
-let g:instant_markdown_autostart = 0 "disable autostart
-nnoremap <leader>md :InstantMarkdownPreview<cr> "\md to instantly preview
-"For ranger plugin
-nnoremap <leader>r :RangerWorkingDirectory<cr>
-
-"=======================================================================
-"=======						DEFAULTS						========
-"=======================================================================
-
-set tags=./tags;
+set omnifunc=syntaxcomplete#Complete "omnicompletion
 
 "set hybrid line numbers
-set number relativenumber
-set background=dark
+set relativenumber
+set nu
+
 "toggle between relative and absolute number
 function! ToggleRelativeNumber()
-	if &relativenumber
-		set norelativenumber
-	else
-		set relativenumber
-	endif
+    if &relativenumber
+        set number norelativenumber
+    else
+        set relativenumber
+    endif
 endfunction
 "use F3 to toggle between rnu and nu
-nmap <F3> :call ToggleRelativeNumber()<CR>
-"set so=10
+nmap <F5> :call ToggleRelativeNumber()<CR>
 "set working directory to allways be the same as the file you are editing
 "set autochdir
+autocmd BufEnter * silent! lcd %:p:h
+nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
+set background=dark
 syntax on
+colorscheme gruvbox
+"hide background color for nonprintible characters
+hi! SpecialKey cterm=none ctermbg=none
 set ruler
+"always show cursor position with underline
 set cul
 set laststatus=2
 set list
-"set Ctrl-D and Ctrl-U to srcoll 5 lines instead of half a page
-"set scroll=5
-"nnoremap <C-d> 5<C-d>
-"nnoremap <C-u> 5<C-u>
+"set Ctrl-D and Ctrl-U to srcoll 10 lines instead of half a page
+set scroll=5
+nnoremap <C-k> J
 nnoremap J 5<C-d>
 nnoremap K 5<C-u>
-"hi SpecialKey ctermfg=white			hello     
-set listchars=tab:▸\ ,trail:~,extends:>,precedes:<
-highlight SpecialKey ctermbg=NONE
+"hi SpecialKey ctermfg=white            hello     
+"set listchars=tab:▸\ ,trail:~,extends:>,precedes:<
+set listchars=tab:\|\ ,trail:~,extends:>,precedes:<
 "set listchars=eol:$,eol:¬,tab:>-,trail:~,extends:>,precedes:<
-"netrw plugin ("nerdtree")
+
+"-----netrw configuration-----
 "let g:netrw_liststyle = 3
 "let g:netrw_banner = 0
 "let g:netrw_winsize = 15
@@ -132,22 +116,51 @@ highlight SpecialKey ctermbg=NONE
 "	endif
 "endfunction
 "map <silent> <C-E> :call ToggleVExplorer()<CR>
+
+"window rotation
+function! RotateLeft()
+    let l:curbuf = bufnr('%')
+    hide
+    wincmd h
+    vsplit
+    exe 'buf' l:curbuf
+endfunc
+
+function! RotateRight()
+    let l:curbuf = bufnr('%')
+    hide
+    wincmd l
+    vsplit
+    exe 'buf' l:curbuf
+endfunc
+
+"map <C-w>H :call RotateLeft()<C-m>
+"map <C-w>L :call RotateRight()
+
+
 set tabstop=4
+"show cursor position with underline only when 2+ windows open
+"augroup BgHighlight
+"autocmd!
+"autocmd WinEnter * set cul
+"autocmd WinLeave * set nocul
+"augroup END
 set autoindent
 set cindent
 set shiftwidth=4
-"Remap Escape for jj"
+"Remap Escape for kj"
 inoremap kj <Esc>
 inoremap оо <Esc>
 "Auto close brackets"
-inoremap {<CR> {<CR>}<C-o>==<C-o>O
+"inoremap {<CR> {<CR>}<C-o>==<C-o>O
+inoremap {<CR> {<CR><CR>}<Esc>kcc
 set splitbelow
 set splitright
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%<82v.\%>81v/
+match OverLength /\%81v./
 augroup vimrc
-	au BufReadPre ?* setlocal foldmethod=indent
-	au BufWinEnter ?* if &fdm == 'indent' | setlocal foldmethod=manual | endif
+au BufReadPre * setlocal foldmethod=indent
+au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
 augroup END
 "Remap folds opening"
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
@@ -155,58 +168,80 @@ vnoremap <Space> zf
 "Remap for easy buffer switch"
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-p> :bprevious<CR>
-"For compilating and executing in vim, :make"
-au BufEnter *.c compiler gcc
-"set makeprg=gcc\ %\ &&\ ./a.out
+"<C-m> == <CR> (it's magic!)
 nnoremap <C-m> :w<CR>:<C-p><CR>
+"For compilating and executing in vim, :make"
+"au BufEnter *.c compiler gcc
+"set makeprg=gcc\ \-Wall\ \-Wextra\ \-Werror\ %\ &&\ ./a.out
+"set makeprg=cd\ \~/ft_printf/\ &&\ make\ re | cw
+"set makeprg=gcc\ \-Wall\ \-Wextra\ \-Werror\ libft.a\ %\ &&\ ./a.out\ \\\|\ cat\ \-e
+"nnoremap <C-m> :w<CR>:mak<CR>
 "For project specific .vimrc files"
 set exrc
 set secure
 "Save folds (actually saves everything you did before exiting vim)"
-au BufWinLeave ?* mkview 1
-au BufWinEnter ?* loadview 1
+"au BufWinLeave ?* mkview 1
+"au BufWinEnter ?* loadview 1
+augroup AutoSaveFolds
+	autocmd!
+	"view files are about 500 bytes
+	"bufleave but not bufwinleave captures closing 2nd tab
+	"nested is needed by bufwrite* (if triggered via other autocmd)
+	autocmd BufWinLeave,BufLeave,BufWritePost ?* nested silent! mkview!
+	autocmd BufWinEnter ?* silent loadview
+augroup end
+set viewoptions=folds,cursor
+set sessionoptions=folds
+
 "For Ukrainian keyboard layout (can't be wrapped in 80 columns)"
 set langmap='йцукенгшщзхїфівапролджєячсмитьбю~ЙЦУКЕHГШЩЗХЇФІВАПРОЛДЖЄЯЧСМИТЬБЮ;`qwertyuiop[]asdfghjkl\\;'zxcvbnm\\,.~QWERTYUIOP{}ASDFGHJKL:\\"ZXCVBNM<>
 "Set vim colors to 256"
 set t_Co=256
-set encoding=utf-8
 
 "=======================================================================
-"=======						MAPPINGS						========
+"=======                        MAPPINGS                        ========
 "=======================================================================
 
 "---With snippets---"
 
-"Creating an int	main(void) block by typing in insert mode ,imv"
-inoremap ,imv int		main(void)<CR>{<CR><CR><CR>}<Esc>ki	return(0);<Esc>kcc
-
-"Creating an int	main(int argc, char **argv)"
-inoremap ,imar int		main(int ac, char **av)<CR>{<CR><CR><CR>}<Esc>ki	return(0);<Esc>kcc
+"Creating an int    main(void) block by typing in insert mode ;imv"
+"inoremap ,imv <Esc>:read $HOME/.vim/snippets/.intmainvoid.c<CR>2jA
+inoremap ,imv int		main(void)<CR>{<CR><CR><CR>}<Esc>ki	return(0);<Esc>ki	
+"Creating an int    main(int argc, char **argv)"
+"inoremap ,imar <Esc>:read $HOME/.vim/snippets/.intmainargcargv.c<CR>2jA
+inoremap ,imar int		main(int ac, char **av)<CR>{<CR><CR><CR>}<Esc>ki	return(0);<Esc>ki	
 
 "---Without snippets---"
 
-inoremap ,, <Esc>0/<++><cr>"_c4l
-nnoremap ,, <Esc>0/<++><cr>"_c4l
+inoremap ,, <Esc>0/<++><cr>"_c4l<Esc>:noh<CR>a
+nnoremap ,, <Esc>0/<++><cr>"_c4l<Esc>:noh<CR>a
+"printf(); with parentheses and appropriate cursor position"
 inoremap ,pf printf("\n", <++>);<Esc>F\i
-inoremap ,fpf ft_printf("\n", <++>);<Esc>F\i
-inoremap ,wr write(1, , <++>);<Esc>F,i
-inoremap ,wh while ()<CR><++><Esc>ki
+autocmd FileType c inoremap ,fpf ft_printf("\n", <++>);<Esc>F\i
+autocmd FileType c inoremap ,wr write(1, , <++>);<Esc>F,i
+autocmd FileType c inoremap ,wh while ()<CR><++><Esc>ki
 inoremap ,if if ()<CR><++><Esc>ki
-inoremap ,( ()<++><Esc>F)i
 inoremap ,$ $()<++><Esc>F)i
-
-"Adding and deleting symbols around the words
+autocmd FileType c inoremap /*<CR> /*<CR><Esc>0c$**<CR>*/<Esc>kA
+"Adding symbols around the words
 vnoremap ,( c()<Esc>hp
-vnoremap ,d( dvhp
 vnoremap ,[ c[]<Esc>hp
-vnoremap ,d[ dvhp
 vnoremap ,< c<><Esc>hp
-vnoremap ,d< dvhp
 vnoremap ," c""<Esc>hp
-vnoremap ,d" dvhp
 "Adding and deleting comments for a line
 vnoremap ,* c/*<cr>*/<Esc>hP
 vnoremap ,d* d"_dkP
+
+"-----php,js remaps and abbrevs-----
+inoremap ,? <?php?><Esc>F?i
+inoremap <C-f> <Right>
+inoremap <C-b> <Left>
+inoremap ( ()<Esc>i
+autocmd FileType php,javascript inoremap ,f function 
+autocmd FileType php inoremap ,pf public function 
+autocmd FileType php inoremap ,vd var_dump();<Esc>hi
+autocmd FileType javascript,blade,typescript inoremap ,cl console.log();<Esc>hi
+autocmd FileType json set tabstop=2
 
 "ABBREVIATIONS"
 
@@ -214,10 +249,22 @@ iabbrev stdioh #include <stdio.h>
 iabbrev unistdh #include <unistd.h>
 iabbrev stdlibh #include <stdlib.h>
 iabbrev stringh #include <string.h>
-iabbrev libfth #include "libft.h"
+iabbrev libfth #include <libft.h>
 iabbrev ctypeh #include <ctype.h>
+iabbrev cursesh #include <curses.h>
+iabbrev termh #include <term.h>
+iabbrev termiosh #include <termios.h>
+iabbrev termcaph #include <termcap.h>
+iabbrev fcntlh #include <fcntl.h>
+iabbrev systypesh #include <sys/types.h>
+iabbrev sysuioh #include <sys/uio.h>
+iabbrev sysstath #include <sys/stat.h>
+iabbrev syswaith #include <sys/wait.h>
+iabbrev direnth #include <dirent.h>
+iabbrev signalh #include <signal.h>
 
-iabbrev cahr char
-iabbrev carh char
 iabbrev returN return
 iabbrev retur return
+iabbrev retu return
+
+iabbrev {{ {{ }}<Esc>2hi
