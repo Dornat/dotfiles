@@ -18,6 +18,8 @@ Plug 'jwalton512/vim-blade'
 Plug 'leafgarland/typescript-vim'
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-commentary'
+Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'SirVer/ultisnips'
 call plug#end()
 
 "=====NERDtree=====
@@ -47,6 +49,16 @@ let g:syntastic_check_on_wq = 0
 
 "=====vim-closetag=====
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml, *.php'
+
+"=====cpp-syntax=====
+let g:cpp_class_scope_highlight = 1
+
+"=====ultisnips=====
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips']
 
 "-----tags usage-----
 set tags=tags;
@@ -148,6 +160,10 @@ set tabstop=4
 set autoindent
 set cindent
 set shiftwidth=4
+
+set langmenu=en_US.UTF-8
+let $LANG = 'en'
+
 "Remap Escape for kj"
 inoremap kj <Esc>
 inoremap оо <Esc>
@@ -206,10 +222,12 @@ set t_Co=256
 
 "Creating an int    main(void) block by typing in insert mode ;imv"
 "inoremap ,imv <Esc>:read $HOME/.vim/snippets/.intmainvoid.c<CR>2jA
-inoremap ,imv int		main(void)<CR>{<CR><CR><CR>}<Esc>ki	return(0);<Esc>ki	
+autocmd FileType c inoremap ,imv int		main(void)<CR>{<CR><CR><CR>}<Esc>ki	return(0);<Esc>ki	
+autocmd FileType cpp inoremap ,imv int		main(void)<CR>{<CR><CR><CR>}<Esc>ki	return 0;<Esc>ki	
 "Creating an int    main(int argc, char **argv)"
 "inoremap ,imar <Esc>:read $HOME/.vim/snippets/.intmainargcargv.c<CR>2jA
-inoremap ,imar int		main(int ac, char **av)<CR>{<CR><CR><CR>}<Esc>ki	return(0);<Esc>ki	
+autocmd FileType c inoremap ,imar int		main(int ac, char **av)<CR>{<CR><CR><CR>}<Esc>ki	return(0);<Esc>ki	
+autocmd FileType cpp inoremap ,imar int		main(int ac, char **av)<CR>{<CR><CR><CR>}<Esc>ki	return 0;<Esc>ki	
 
 "---Without snippets---"
 
@@ -220,6 +238,7 @@ inoremap ,pf printf("\n", <++>);<Esc>F\i
 autocmd FileType c inoremap ,fpf ft_printf("\n", <++>);<Esc>F\i
 autocmd FileType c inoremap ,wr write(1, , <++>);<Esc>F,i
 autocmd FileType c inoremap ,wh while ()<CR><++><Esc>ki
+autocmd FileType cpp inoremap ,co std::cout <<  << std::endl;<Esc>FsBhi
 inoremap ,if if ()<CR><++><Esc>ki
 inoremap ,$ $()<++><Esc>F)i
 autocmd FileType c inoremap /*<CR> /*<CR><Esc>0c$**<CR>*/<Esc>kA
@@ -262,6 +281,11 @@ iabbrev sysstath #include <sys/stat.h>
 iabbrev syswaith #include <sys/wait.h>
 iabbrev direnth #include <dirent.h>
 iabbrev signalh #include <signal.h>
+
+
+"-----cpp-----
+autocmd FileType cpp iabbrev iiostream #include <iostream>
+autocmd FileType cpp iabbrev istring #include <string>
 
 iabbrev returN return
 iabbrev retur return
