@@ -20,6 +20,7 @@ Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-commentary'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'SirVer/ultisnips'
+Plug 'mkitt/tabline.vim'
 call plug#end()
 
 "=====NERDtree=====
@@ -121,6 +122,8 @@ endif
 "set hybrid line numbers
 set relativenumber
 set nu
+
+set wildmode=list:longest,full "extend tab suggestions for :comand
 
 "toggle between relative and absolute number
 function! ToggleRelativeNumber()
@@ -238,7 +241,7 @@ vnoremap <Space> zf
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-p> :bprevious<CR>
 "<C-m> == <CR> (it's magic!)
-nnoremap <C-m> :w<CR>:<C-p><CR>
+" nnoremap <C-m> :w<CR>:<C-p><CR>
 "For compilating and executing in vim, :make"
 "au BufEnter *.c compiler gcc
 "set makeprg=gcc\ \-Wall\ \-Wextra\ \-Werror\ %\ &&\ ./a.out
