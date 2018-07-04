@@ -74,7 +74,13 @@ let vim_markdown_preview_hotkey='<leader>m'
 "=====fzf-search=====
 nnoremap H :Files 
 nnoremap L :Buffers<CR>
-nnoremap M :GFiles<CR>
+
+function! s:find_git_root()
+	return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+endfunction
+command! ProjectFiles execute 'Files' s:find_git_root()
+
+nnoremap M :ProjectFiles<CR>
 
 "-----tags usage-----
 set tags=tags;
@@ -218,7 +224,12 @@ endfunc
 "map <C-w>L :call RotateRight()
 
 
+"-----indentation settings-----
 set tabstop=4
+set shiftwidth=4 "Indents will have a width of 4
+set softtabstop=4 "Sets the number of columns for a TAB
+set expandtab "Expand TABs to spaces
+
 "show cursor position with underline only when 2+ windows open
 "augroup BgHighlight
 "autocmd!
