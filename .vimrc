@@ -21,6 +21,11 @@ Plug 'tpope/vim-commentary'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'SirVer/ultisnips'
 Plug 'mkitt/tabline.vim'
+Plug 'JamshedVesuna/vim-markdown-preview'
+Plug 'mxw/vim-jsx'
+Plug 'jelera/vim-javascript-syntax'
+Plug '/Users/dpolosuk/.brew/opt/fzf'
+Plug 'junegunn/fzf.vim'
 call plug#end()
 
 "=====NERDtree=====
@@ -60,6 +65,16 @@ let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips']
+
+"=====markdown-preview=====
+let vim_markdown_preview_github=1
+let vim_markdown_preview_toggle=1
+let vim_markdown_preview_hotkey='<leader>m'
+
+"=====fzf-search=====
+nnoremap H :Files 
+nnoremap L :Buffers<CR>
+nnoremap M :GFiles<CR>
 
 "-----tags usage-----
 set tags=tags;
@@ -207,7 +222,7 @@ augroup AutoSaveFolds
 	"bufleave but not bufwinleave captures closing 2nd tab
 	"nested is needed by bufwrite* (if triggered via other autocmd)
 	autocmd BufWinLeave,BufLeave,BufWritePost ?* nested silent! mkview!
-	autocmd BufWinEnter ?* silent loadview
+	autocmd BufWinEnter ?* silent! loadview
 augroup end
 set viewoptions=folds,cursor
 set sessionoptions=folds
