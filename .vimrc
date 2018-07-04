@@ -61,9 +61,6 @@ let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips']
 
-set wildmode=list:longest,full
-
-
 "-----tags usage-----
 set tags=tags;
 filetype plugin on
