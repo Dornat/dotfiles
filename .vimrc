@@ -81,6 +81,56 @@ set tags=tags;
 filetype plugin on
 set omnifunc=syntaxcomplete#Complete "omnicompletion
 
+"-----window manipulation remaps-----
+nnoremap <M-h> <c-w>h
+nnoremap <M-j> <c-w>j
+nnoremap <M-k> <c-w>k
+nnoremap <M-l> <c-w>l
+if has('nvim')
+	tnoremap <M-h> <c-\><c-n><c-w>h
+	tnoremap <M-j> <c-\><c-n><c-w>j
+	tnoremap <M-k> <c-\><c-n><c-w>k
+	tnoremap <M-l> <c-\><c-n><c-w>l
+	tnoremap <c-[> <c-\><c-n>
+endif
+nnoremap <M-c> <c-w>c
+nnoremap <M-o> <c-w>o
+nnoremap <M-s> <c-w>s
+nnoremap <M-v> <c-w>v
+nnoremap <M-b> <c-w>b
+nnoremap <M-t> <c-w>t
+nnoremap <M--> <c-w>-
+nnoremap <M-+> <c-w>+
+nnoremap <M-=> <c-w>=
+nnoremap <M->> <c-w>>
+nnoremap <M-<> <c-w><
+nnoremap <M-S-l> <c-w>L
+nnoremap <M-S-h> <c-w>H
+"-----tab manipulation remaps-----
+nnoremap <M-T> <c-w>T
+nnoremap <M-n> gt
+nnoremap <M-p> gT
+nnoremap <M-1> 1gt
+nnoremap <M-2> 2gt
+nnoremap <M-3> 3gt
+nnoremap <M-4> 4gt
+nnoremap <M-5> 5gt
+nnoremap <M-6> 6gt
+nnoremap <M-7> 7gt
+nnoremap <M-8> 8gt
+nnoremap <M-9> 9gt
+
+"-----remove relative numbered lines when opening terminal-----
+function! SetNoNumberNoRelativeNumber()
+	set norelativenumber
+	set nonumber
+endfunc
+
+if has('nvim')
+	autocmd TermOpen * :call SetNoNumberNoRelativeNumber()
+endif
+
+
 "set hybrid line numbers
 set relativenumber
 set nu
