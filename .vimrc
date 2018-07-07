@@ -90,7 +90,7 @@ let g:ale_linters = {
 \ }
 let g:ale_php_phpstan_configuration = '/home/dornat/Programming/Matcha/phpstan.neon'
 let g:ale_php_phpstan_level = 5
-let g:ale_lint_delay = 300
+let g:ale_lint_delay = 500
 let g:ale_sign_column_always = 1
 " Mappings in the style of unimpaired-next
 nmap <silent> [W <Plug>(ale_first)
@@ -152,6 +152,9 @@ if has('nvim')
 	autocmd TermOpen * :call SetNoNumberNoRelativeNumber()
 endif
 
+"-----horizontal scrolling when wrap is off-----
+nnoremap <C-f> 10zl
+nnoremap <C-b> 10zh
 
 "set hybrid line numbers
 set relativenumber
