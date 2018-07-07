@@ -26,6 +26,7 @@ Plug 'mxw/vim-jsx'
 Plug 'jelera/vim-javascript-syntax'
 Plug '/Users/dpolosuk/.brew/opt/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'w0rp/ale'
 call plug#end()
 
 "=====NERDtree=====
@@ -81,6 +82,21 @@ endfunction
 command! ProjectFiles execute 'Files' s:find_git_root()
 
 nnoremap M :ProjectFiles<CR>
+
+"=====ale======
+let g:ale_linters = {
+	\'javascript': ['eslint'],
+	\'php': 'all',
+\ }
+let g:ale_php_phpstan_configuration = '/home/dornat/Programming/Matcha/phpstan.neon'
+let g:ale_php_phpstan_level = 5
+let g:ale_lint_delay = 300
+let g:ale_sign_column_always = 1
+" Mappings in the style of unimpaired-next
+nmap <silent> [W <Plug>(ale_first)
+nmap <silent> [w <Plug>(ale_previous)
+nmap <silent> ]w <Plug>(ale_next)
+nmap <silent> ]W <Plug>(ale_last)
 
 "-----tags usage-----
 set tags=tags;
@@ -228,7 +244,7 @@ endfunc
 set tabstop=4
 set shiftwidth=4 "Indents will have a width of 4
 set softtabstop=4 "Sets the number of columns for a TAB
-set expandtab "Expand TABs to spaces
+"set expandtab "Expand TABs to spaces
 
 "show cursor position with underline only when 2+ windows open
 "augroup BgHighlight
