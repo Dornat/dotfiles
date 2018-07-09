@@ -27,6 +27,8 @@ Plug 'jelera/vim-javascript-syntax'
 Plug '/Users/dpolosuk/.brew/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'w0rp/ale'
+Plug 'lumiliet/vim-twig'
+Plug 'vim-vdebug/vdebug'
 call plug#end()
 
 "=====NERDtree=====
@@ -88,7 +90,7 @@ let g:ale_linters = {
 	\'javascript': ['eslint'],
 	\'php': 'all',
 \ }
-let g:ale_php_phpstan_configuration = '/home/dornat/Programming/Matcha/phpstan.neon'
+let g:ale_php_phpstan_configuration = "$HOME/.config/phpstan/phpstan.neon"
 let g:ale_php_phpstan_level = 5
 let g:ale_lint_delay = 500
 let g:ale_sign_column_always = 1
@@ -156,6 +158,9 @@ endif
 nnoremap <C-f> 10zl
 nnoremap <C-b> 10zh
 
+"-----invoke sudo on file-----
+command W w !sudo tee "%" > /dev/null
+
 "set hybrid line numbers
 set relativenumber
 set nu
@@ -171,7 +176,7 @@ function! ToggleRelativeNumber()
     endif
 endfunction
 "use F3 to toggle between rnu and nu
-nmap <F5> :call ToggleRelativeNumber()<CR>
+"nmap <F5> :call ToggleRelativeNumber()<CR>
 "set working directory to allways be the same as the file you are editing
 "set autochdir
 autocmd BufEnter * silent! lcd %:p:h
