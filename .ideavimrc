@@ -30,3 +30,5 @@ nnoremap <c-j> :action SwitchDown<cr>
 "-----debug specific-----
 nnoremap <leader>b :action ToggleLineBreakpoint<cr>
 nnoremap <leader>r :action RunToCursor<cr>
+
+"gruvbox folded text background 464f49
