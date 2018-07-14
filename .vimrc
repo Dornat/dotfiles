@@ -29,7 +29,12 @@ Plug 'junegunn/fzf.vim'
 Plug 'w0rp/ale'
 Plug 'lumiliet/vim-twig'
 Plug 'vim-vdebug/vdebug'
+" Plug 'ctrlpvim/ctrlp.vim'
+Plug 'tpope/vim-surround'
+Plug 'tobyS/vmustache'
+Plug 'tobyS/pdv'
 call plug#end()
+
 
 "=====NERDtree=====
 map <C-E> :NERDTreeToggle<CR>
@@ -90,7 +95,7 @@ let g:ale_linters = {
 	\'javascript': ['eslint'],
 	\'php': 'all',
 \ }
-let g:ale_php_phpstan_configuration = "$HOME/.config/phpstan/phpstan.neon"
+let g:ale_php_phpstan_configuration = "/home/dornat/.config/phpstan/phpstan.neon"
 let g:ale_php_phpstan_level = 5
 let g:ale_lint_delay = 500
 let g:ale_sign_column_always = 1
@@ -99,6 +104,33 @@ nmap <silent> [W <Plug>(ale_first)
 nmap <silent> [w <Plug>(ale_previous)
 nmap <silent> ]w <Plug>(ale_next)
 nmap <silent> ]W <Plug>(ale_last)
+
+"=====Vdebug=====
+let g:vdebug_options= {
+\    "port" : 8081,
+\    "server" : 'localhost',
+\    "timeout" : 20,
+\    "on_close" : 'detach',
+\    "break_on_open" : 1,
+\    "ide_key" : '',
+\    "path_maps" : {},
+\    "debug_window_level" : 0,
+\    "debug_file_level" : 0,
+\    "debug_file" : "",
+\    "watch_window_style" : 'expanded',
+\    "marker_default" : '⬦',
+\    "marker_closed_tree" : '▸',
+\    "marker_open_tree" : '▾'
+\}
+
+"=====CtrlP=====
+let g:ctrlp_map = 'M'
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:25,results:25'
+
+"=====pdv=====
+let g:pdv_template_dir = "/home/dornat/.vim/plugged/pdv/templates_snip"
+nnoremap <leader>d :call pdv#DocumentWithSnip()<CR>
 
 "-----tags usage-----
 set tags=tags;
@@ -155,15 +187,26 @@ if has('nvim')
 endif
 
 "-----horizontal scrolling when wrap is off-----
+set nowrap
 nnoremap <C-f> 10zl
 nnoremap <C-b> 10zh
 
 "-----invoke sudo on file-----
 command W w !sudo tee "%" > /dev/null
 
+"-----php syntax lag fix tries-----
+set foldmethod=manual
+set foldmethod=indent
+set noshowmatch
+
+"-----persistent undo-----
+set undofile
+set undodir=~/.config/nvim/undodir
+
 "set hybrid line numbers
 set relativenumber
 set nu
+" set lazyredraw
 
 set wildmode=list:longest,full "extend tab suggestions for :comand
 
@@ -188,7 +231,7 @@ colorscheme gruvbox
 hi! SpecialKey cterm=none ctermbg=none
 set ruler
 "always show cursor position with underline
-set cul
+" set cul
 set laststatus=2
 set list
 "set Ctrl-D and Ctrl-U to srcoll 10 lines instead of half a page
@@ -252,7 +295,7 @@ endfunc
 set tabstop=4
 set shiftwidth=4 "Indents will have a width of 4
 set softtabstop=4 "Sets the number of columns for a TAB
-"set expandtab "Expand TABs to spaces
+set expandtab "Expand TABs to spaces
 
 "show cursor position with underline only when 2+ windows open
 "augroup BgHighlight
@@ -311,6 +354,7 @@ augroup AutoSaveFolds
 augroup end
 set viewoptions=folds,cursor
 set sessionoptions=folds
+set foldmethod=indent
 
 "For Ukrainian keyboard layout (can't be wrapped in 80 columns)"
 set langmap='йцукенгшщзхїфівапролджєячсмитьбю~ЙЦУКЕHГШЩЗХЇФІВАПРОЛДЖЄЯЧСМИТЬБЮ;`qwertyuiop[]asdfghjkl\\;'zxcvbnm\\,.~QWERTYUIOP{}ASDFGHJKL:\\"ZXCVBNM<>
