@@ -11,8 +11,8 @@ nnoremap <A-l> :action VimWindowRight<cr>
 nnoremap <A-v> :action VimWindowSplitVertical<cr>
 nnoremap <A-c> :action CloseContent<cr>
 nnoremap <A-r> :action ReopenClosedTab<cr>
-nnoremap <A-n> :action VimMotionNextTab<cr>
-nnoremap <A-p> :action VimMotionPreviousTab<cr>
+nnoremap <L> :action VimMotionNextTab<cr>
+nnoremap <H> :action VimMotionPreviousTab<cr>
 
 nnoremap J 5<C-d>
 nnoremap K 5<C-u>
@@ -21,14 +21,18 @@ nnoremap <C-b> 10zh
 nnoremap <C-k> J
 
 nnoremap <leader>f :action GotoFile<cr>
+nnoremap <A-f> :action GotoFile<cr>
 nnoremap <leader>c :action GotoClass<cr>
+nnoremap <A-a> :action GotoClass<cr>
 nnoremap <leader>s :action GotoSymbol<cr>
+nnoremap <A-s> :action GotoSymbol<cr>
 nnoremap <leader>u :action FindUsages<cr>
+nnoremap <A-u> :action FindUsages<cr>
 
 nnoremap <c-j> :action SwitchDown<cr>
 
 "-----debug specific-----
 nnoremap <leader>b :action ToggleLineBreakpoint<cr>
-nnoremap <leader>r :action RunToCursor<cr>
+nnoremap M :action RunToCursor<cr>
 
 "gruvbox folded text background 464f49

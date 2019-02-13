@@ -33,6 +33,7 @@ Plug 'vim-vdebug/vdebug'
 Plug 'tpope/vim-surround'
 Plug 'tobyS/vmustache'
 Plug 'tobyS/pdv'
+Plug 'ekalinin/Dockerfile.vim'
 call plug#end()
 
 
