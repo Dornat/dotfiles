@@ -1,0 +1,7 @@
+defscrollback 100000
+termcapinfo xterm ti@:te@
+startup_message off
+altscreen on
+hardstatus off
+hardstatus alwayslastline "%{= kw} %-Lw%{=b kw} %n*%f %t %{-}%+Lw %=%{= dd}"
+screen -t main 0

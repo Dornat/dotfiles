@@ -825,7 +825,8 @@ include/editor
 	Open=%var{EDITOR:vi} %f
 
 include/image
-	Open=feh %f 1>/dev/null 2>&1 &
+	Open=deepin-image-viewer %f 1>/dev/null 2>&1 &
+	#Open=feh %f 1>/dev/null 2>&1 &
 	#Open=/usr/lib/mc/ext.d/image.sh open ALL_FORMATS
 	View=%view{ascii} /usr/lib/mc/ext.d/image.sh view ALL_FORMATS
 
