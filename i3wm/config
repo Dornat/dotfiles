@@ -35,7 +35,7 @@ floating_modifier $mod
 bindsym $mod+Return exec i3-sensible-terminal
 
 # kill focused window
-bindsym $mod+Shift+q kill
+bindsym $mod+q kill
 
 # start dmenu (a program launcher)
 # There also is the (new) i3-dmenu-desktop which only displays applications
@@ -96,12 +96,12 @@ bindsym $mod+a focus parent
 set $ws1 "1 "
 set $ws2 "2 "
 set $ws3 "3 "
-set $ws4 "4 "
+set $ws4 "4 "
 set $ws5 "5 "
-set $ws6 "6 "
+set $ws6 "6 "
 set $ws7 "7 "
 set $ws8 "8 "
-set $ws9 "9 "
+set $ws9 "9 "
 set $ws10 "10 "
 
 # switch to workspace
@@ -129,10 +129,11 @@ bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
 
 assign [class="Chromium"] $ws1
-assign [class="google-chrome-stable"] $ws1
+assign [class="Google-chrome"] $ws1
 assign [class="feh"] $ws8
 #assign [class="Rsvg-view-3"] $ws8
 assign [class="Vlc"] $ws9
+assign [class="Slack"] $ws9
 #assign [class="X-terminal-emulator"] $ws2
 assign [class="TelegramDesktop"] $ws10
 
@@ -189,7 +190,7 @@ hide_edge_borders both
 bar {
 	font pango: Ubuntu Mono derivative Powerline, FontAwesome 10
 #	status_command py3status
-	status_command ~/.config/i3/bumblebee-status/bumblebee-status -m memory nic pasink battery layout-xkb date time -p date.format="%a, %b %d %Y" time.format="%I:%M %p" nic.states=^down -t solarized-powerline
+	status_command ~/.config/i3/bumblebee-status/bumblebee-status -m memory nic weather pasink layout-xkb date time -p date.format="%a, %b %d %Y" time.format="%I:%M %p" nic.states=^down -t solarized-powerline
 #	status_command i3blocks -c ~/.config/i3/i3blocks.conf
 	tray_output none
 	colors {
@@ -205,24 +206,25 @@ bar {
 bindsym $mod+shift+x exec sh ~/.local/bin/fuzzy_lock.sh
 ## When screen inactive
 ## exec_always xautolock -detectsleep -time 1 -locker 'sh ~/.local/bin/fuzzy_lock.sh' &
+exec_always start-pulseaudio-x11
 bindsym $mod+p workspace prev
 bindsym $mod+n workspace next
 bindsym $mod+d exec rofi -show run -lines 9 -eh 2 -width 100 -padding 300 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd"
 
 bindsym $mod+Shift+a exec i3-sensible-terminal -e ranger
 #bindsym $mod+c exec chromium; workspace $ws1
-bindsym $mod+c exec google-chrome-stable; workspace $ws1
-bindsym $mod+shift+s exec gnome-screenshot -a && mv Screenshot\ from\ 2018-0* Screenshots/
+bindsym $mod+c exec chromium-browser
+bindsym $mod+shift+s exec gnome-screenshot --interactive
+# bindsym $mod+shift+s exec sh ~/.local/bin/screenshot.sh
 #bindsym $mod+m exec vlc ~/Music/EPIC\ MUSIC/Filtration
 bindsym $mod+shift+t exec tor-browser
 bindsym $mod+m exec emacs
 bindsym $mod+o exec ktorrent
-bindsym $mod+z exec sh ~/bin/screencast.sh
-bindsym $mod+shift+z exec pkill ffmpeg
+bindsym $mod+shift+z exec sh ~/bin/screencast.sh
 
 # # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -D pulse set Master 1%+ #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -D pulse set Master 1%- #decrease sound volume
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
 
 # # Sreen brightness controls
@@ -240,17 +242,18 @@ bindsym XF86AudioPrev exec playerctl previous
 
 # # Autoloading
 #exec chromium
-exec google-chrome-stable
 exec --no-startup-id i3-msg 'workspace $ws2; exec /usr/bin/i3-sensible-terminal'
 exec telegram-desktop
-exec shutdown -h 23:42 --no-wall
-exec_always xrandr --output HDMI1 --off --output LVDS1 --mode 1366x768 --pos 0x0 --rotate normal --output VIRTUAL1 --off --output DP1 --off --output VGA1 --off
+exec slack
+exec chromium-browser
+# exec_always xrandr --output HDMI1 --off --output LVDS1 --mode 1366x768 --pos 0x0 --rotate normal --output VIRTUAL1 --off --output DP1 --off --output VGA1 --off
 exec memcached
 exec xrandr --setprovideroutputsource modesetting NVIDIA-0
 exec xrandr --auto
 
 # # Keyboard layout
-#exec_always --no-startup-id "setxkbmap -model pc105 -layout us,ua,ru -option grp:lctrl_lshift_toggle"
+exec_always --no-startup-id "setxkbmap -model pc105 -layout us,ua -option grp:shifts_toggle"
+#setxkbmap -model pc105 -layout us,ua -option grp:shifts_toggle
 
 # swap windows key with alt key
 # exec_always setxkbmap -option 'altwin:swap_alt_win'
@@ -258,8 +261,11 @@ exec xrandr --auto
 # # Dual monitor toggle
 
 # bindsym $mod+Shift+m exec xrandr --output VGA1 --auto --right-of LVDS1
-bindsym $mod+Shift+m exec xrandr --output HDMI1 --auto --right-of LVDS1
-bindsym $mod+Shift+o exec xrandr --output HDMI1 --off
+#bindsym $mod+Shift+m exec xrandr --output HDMI1 --auto --right-of LVDS1
+#bindsym $mod+Shift+o exec xrandr --output HDMI1 --off
+bindsym $mod+Shift+m exec xrandr --output DVI-D-0 --mode 1920x1080 --right-of HDMI-A-0
+bindsym $mod+Shift+o exec xrandr --output DVI-D-0 --off
+
 
 
 # dual monitor workspace move
@@ -268,8 +274,8 @@ bindsym $mod+Shift+bracketright move workspace to output right
 
 #exec_always setxkbmap -layout us -option caps:escape
 
-floating_minimum_size 700 x 350
-floating_maximum_size 1300 x 700
+# floating_minimum_size 700 x 350
+# floating_maximum_size 1300 x 700
 
 #ncmpcpp config
 #set $pause				--no-startup-id mpc toggle
@@ -286,3 +292,10 @@ bindsym $mod+Tab			workspace back_and_forth
 
 #set bg image
 exec --no-startup-id feh --bg-scale ~/Downloads/kiss_by_jesuisnerd-d4zx2ih.jpg
+# bindsym $mod+b fullscreen disable; floating enable; resize set 640 398; sticky enable; move window to position 1218 662
+# bindsym $mod+Shift+b fullscreen disable; floating disable; sticky disable
+# remove borders for all windows
+# for_window [class="^.*"] border pixel 1
+# new_window 1pixel
+#
+# bindsym $mod+shift+s for_window [class="Slack" window_role="browser-window"] floating enable move position 1000px 1000px

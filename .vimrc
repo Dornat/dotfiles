@@ -17,10 +17,10 @@ Plug 'hecal3/vim-leader-guide'
 
 " <<<Code completion, refactoring and goto definition>>>
 Plug 'phpactor/phpactor' ,  {'do': 'composer install', 'for': 'php'}
-Plug 'ncm2/ncm2'
+" Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
 Plug 'phpactor/ncm2-phpactor'
-Plug 'ncm2/ncm2-ultisnips'
+" Plug 'ncm2/ncm2-ultisnips'
 Plug 'SirVer/ultisnips'
 " Plug 'beanworks/vim-phpfmt' "psr formatting
 Plug 'stephpy/vim-php-cs-fixer'
@@ -104,7 +104,7 @@ vnoremap <silent> <leader> :<c-u>LeaderGuideVisual '<Space>'<CR>
 let g:phpactorPhpBin = '/usr/bin/php71'
 
 " Make ncm2 work automatically
-autocmd BufEnter * call ncm2#enable_for_buffer()
+" autocmd BufEnter * call ncm2#enable_for_buffer()
 " When autocompleting auto select the first one and do not autoinsert.
 set completeopt=noinsert,menuone,noselect
 
@@ -115,7 +115,7 @@ set completeopt=noinsert,menuone,noselect
 " inoremap <expr> <c-k> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " When pressing CTRL+u on a suggestion, it will expand with parameters.
-inoremap <silent> <expr> <CR> ncm2_ultisnips#expand_or("\<CR>", 'n')
+" inoremap <silent> <expr> <CR> ncm2_ultisnips#expand_or("\<CR>", 'n')
 
 " Tab and Shift-Tab will cycle thorough parameters.
 let g:UltiSnipsJumpForwardTrigger="<tab>"
