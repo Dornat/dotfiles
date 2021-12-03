@@ -1,5 +1,9 @@
 defscrollback 100000
 termcapinfo xterm ti@:te@
+# Truecolor support. Very important for nvim for termguicolors to work.
+# It needs screen-4.99.0 version. This version can be installed by following
+# this guide https://habr.com/ru/post/467567/
+truecolor on
 startup_message off
 altscreen on
 hardstatus off
